@@ -2,10 +2,7 @@ package at.ac.fhcampuswien;
 
 public class App {
     public static void main (String[] args){
-        System.out.println("Hello World!");
-    }
+        AppController ctrl = new AppController();
 
-    public String welcomeMessage(){
-        return "Hello World!";
     }
 }
