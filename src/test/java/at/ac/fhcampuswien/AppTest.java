@@ -27,4 +27,14 @@ public class AppTest {
         int cnt = ctrl.getArticleCount();
         assertEquals(0, cnt);
     }
+
+    @Test
+    public void getTopHeadlinesAustriaTest(){
+        AppController ctrl = new AppController();
+        List <Article> top; // = new ArrayList<Article>(); //neue leere Liste erstellt
+
+        top = ctrl.getTopHeadlinesAustria(); //leere Liste mit der Methode getTopHeadlinesAustria befüllen
+
+        assertEquals(3, top.size()); //Top 3 Schlagzeilen sollen ausgeführt werden
+    }
 }

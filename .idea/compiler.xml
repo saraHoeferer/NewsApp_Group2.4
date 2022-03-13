@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="NewsApp_Group2.4" />
+        <module name="NewsAppGroup24" />
       </profile>
     </annotationProcessing>
   </component>
