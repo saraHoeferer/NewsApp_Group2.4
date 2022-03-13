@@ -7,6 +7,7 @@ import java.util.List;
 public class AppController {
     private List <Article> articles;
 
+
     public AppController(){
         articles = new ArrayList<Article>();
         articles = this.generateMockList();
@@ -23,7 +24,13 @@ public class AppController {
     }
 
     public List <Article> getTopHeadlinesAustria (){
-        return articles;
+        List<Article> topHeadLines = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) { //die ersten 3 Schlagzeilen
+            topHeadLines.add(articles.get(i)); //leere Liste topHeadLines mit den ersten 3 Artikel der article Liste befüllen
+        }
+
+        return topHeadLines;
     }
 
     public List <Article> getAllNewsBitcoin () {
