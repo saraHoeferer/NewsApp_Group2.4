@@ -13,14 +13,14 @@ public class AppController {
         articles = this.generateMockList();
     }
 
-    public void setArticles (List <Article> articles){
-        for (int i = 0; i < articles.size(); i++) {
-            this.articles.add(articles.get(i));
-        }
-    }
+    public void setArticles (List <Article> articles){ this.articles = articles; }
 
     public int getArticleCount (){
-        return 0;
+        if (articles == null){
+            return 0;
+        } else {
+            return articles.size();
+        }
     }
 
     public List <Article> getTopHeadlinesAustria (){
@@ -34,13 +34,17 @@ public class AppController {
     }
 
     public List <Article> getAllNewsBitcoin () {
-        List<Article> list = new ArrayList();
-        return list;
+        return filterList("bitcoin", articles);
     }
 
-    protected static List<Article> filterList(String query, List <Article> articles) {
-        List<Article> filteredList = new ArrayList();
-        return filteredList;
+    protected static List<Article> filterList(String query, List <Article> articles) { // takes String for requested phrase and list of articles
+        List<Article> filteredList = new ArrayList(); // create new empty array list
+        for(Article article: articles){ // go through all articles with for each loop
+            if(article.getTitle().toLowerCase().contains(query)){ // cast title of article to lower case and look up if it contains the query
+                filteredList.add(article); // if title contains query add to the new array list
+            }
+        }
+        return filteredList; // return the filtered list
     }
 
     private List <Article> generateMockList(){
