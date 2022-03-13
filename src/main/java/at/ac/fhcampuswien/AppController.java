@@ -12,14 +12,14 @@ public class AppController {
         articles = this.generateMockList();
     }
 
-    public void setArticles (List <Article> articles){
-        for (int i = 0; i < articles.size(); i++) {
-            this.articles.add(articles.get(i));
-        }
-    }
+    public void setArticles (List <Article> articles){ this.articles = articles; }
 
     public int getArticleCount (){
-        return 0;
+        if (articles == null){
+            return 0;
+        } else {
+            return articles.size();
+        }
     }
 
     public List <Article> getTopHeadlinesAustria (){
