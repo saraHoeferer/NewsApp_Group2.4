@@ -13,7 +13,9 @@ public class Menu {
 
     private void getTopHeadlinesAustria (AppController ctrl) {}
 
-    private void getAllNewsBitcoin (AppController ctrl) {}
+    private void getAllNewsBitcoin (AppController ctrl) {
+
+    }
 
     private static void printExitMessage () {}
 
