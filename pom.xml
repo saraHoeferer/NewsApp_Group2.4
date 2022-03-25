@@ -39,6 +39,11 @@
             <artifactId>javafx-fxml</artifactId>
             <version>16</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>16</version>
+        </dependency>
 
     </dependencies>
 
@@ -68,7 +73,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                               at.ac.fhcampuswien/at.ac.fhcampuswien.HelloApplication
+                               at.ac.fhcampuswien/at.ac.fhcampuswien.App
                             </mainClass>
                         </configuration>
                     </execution>

@@ -19,7 +19,7 @@ public class Article {
     }
 
     public String toString(){
-        String string = "Titel: " + title + "\nAuthor: " + author;
+        String string = "Titel: " + title + ", Author: " + author;
         return string;
     }
 
