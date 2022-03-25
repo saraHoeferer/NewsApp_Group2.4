@@ -27,13 +27,13 @@ public class AppController {
     }
 
     public List <Article> getTopHeadlinesAustria (){
-        List<Article> topHeadLines = new ArrayList<>();
+        /*List<Article> topHeadLines = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) { //die ersten 3 Schlagzeilen
             topHeadLines.add(articles.get(i)); //leere Liste topHeadLines mit den ersten 3 Artikel der article Liste befüllen
         }
-
-        return topHeadLines;
+        */
+        return articles;
     }
 
     public List <Article> getAllNewsBitcoin () {

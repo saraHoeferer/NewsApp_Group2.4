@@ -8,42 +8,49 @@ public class Menu {
     private static final String INVALID_INPUT_MESSAGE = "Please enter a valid input!";
     private static final String EXIT_MESSAGE = "Bye bye!";
 
+    Menu(){
+        controller = new AppController();
+    }
     public void start(){
         Scanner scanner = new Scanner(System.in);
-        printMenu();
-        String input = scanner.nextLine();
-        while (!Objects.equals(input, "q")){
-
-            switch (input){
-                case "a":
-                    getTopHeadlinesAustria(controller);
-                    break;
-                case "b":
-                    getAllNewsBitcoin(controller);
-                    break;
-                case "y":
-                    getArticleCount(controller);
-                    break;
-                case "q":
-                    printExitMessage();
-                    break;
-                default:
-                    printInvalidInputMessage();
-            }
+        String input;
+        do {
             printMenu();
             input = scanner.nextLine();
+            handleInput(input);
+        } while (!input.equals("q"));
+    }
+
+    private void handleInput(String input){
+        switch (input){
+            case "a":
+                getTopHeadlinesAustria(controller);
+                break;
+            case "b":
+                getAllNewsBitcoin(controller);
+                break;
+            case "y":
+                getArticleCount(controller);
+                break;
+            case "q":
+                printExitMessage();
+                break;
+            default:
+                printInvalidInputMessage();
         }
     }
 
-    private void handleInput(String input){}
-
-    private void getArticleCount(AppController ctrl){}
-
-    private void getTopHeadlinesAustria(AppController ctrl){
-        ctrl.getTopHeadlinesAustria();
+    private void getArticleCount(AppController ctrl){
+        System.out.println(controller.getArticleCount());
     }
 
-    private void getAllNewsBitcoin(AppController ctrl){}
+    private void getTopHeadlinesAustria(AppController ctrl){
+        System.out.println(controller.getTopHeadlinesAustria());
+    }
+
+    private void getAllNewsBitcoin(AppController ctrl){
+        System.out.println(controller.getAllNewsBitcoin());
+    }
 
     private static void printExitMessage(){
         System.out.println(EXIT_MESSAGE);

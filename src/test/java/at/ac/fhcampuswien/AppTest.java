@@ -128,6 +128,13 @@ public class AppTest extends AppController{
             expected.add(new Article("Hayley Maguire", "How Austrian states are preparing for Ukrainian refugees"));
             expected.add(new Article("Hayley Maguire", "'The pandemic has not been mastered': Vienna to tighten Covid measures"));
             expected.add(new Article("Ellie Harrison", "Arnold Schwarzenegger speaks candidly about Nazi father as he makes plea to Russia amid Ukraine invasion"));
+            expected.add(new Article("Amit Mudgill", "Top cryptocurrency prices today: Bitcoin Ethereum, BNB recover after up to 8% plunge"));
+            expected.add(new Article("Phil Blanche", "Scotland-Ukrainer postponed until June but Wales semi-final goes ahead as planned"));
+            expected.add(new Article("NYT News Service", "BiTCoin was made for this moment. So why isn't it booming?"));
+            expected.add(new Article("Reuters", "BITCOIN rallies after Biden signs executive order on digital assets"));
+            expected.add(new Article("Henry Saker-Clark", "Omicron cuts into sales momentum at Zara owner Inditex"));
+            expected.add(new Article("Medha Singh", "Cryptoverse: bitcoin's scared of commitment, Mr Biden"));
+            expected.add(new Article("AP news wire", "Shiffrin 5th after Olympic combined downhill; has medal shot"));
 
             //Get All Top News from AppController
             actual = ctrl.getTopHeadlinesAustria();
