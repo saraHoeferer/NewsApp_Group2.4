@@ -24,8 +24,7 @@ public class Article {
     //Override to string method so String looks like "Title: X, Author: X"
     @Override
     public String toString(){
-        String string = "Titel: " + title + ", Author: " + author;
+        String string = "Title: " + title + ", Author: " + author;
         return string;
     }
-
 }

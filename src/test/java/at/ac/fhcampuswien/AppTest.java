@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,11 +41,11 @@ public class AppTest extends AppController{
             //Set expected as Articles in AppController
             ctrl.setArticles(expected);
 
-            //get Articles von AppController
-            actual = ctrl.getArticles();
+            //Get Article count from AppController
+            int cnt = ctrl.getArticleCount();
 
-            //assert if expected List and actual List are identical
-            assertEquals(expected.containsAll(actual), actual.containsAll(expected));
+            //check if count and size are identical
+            assertEquals(expected.size(), cnt);
         } catch (Exception e){
             //else print Stacktrace
             e.printStackTrace();
@@ -112,7 +113,7 @@ public class AppTest extends AppController{
             actual = ctrl.getAllNewsBitcoin();
 
             //check if both lists are identical
-            assertEquals(expected.containsAll(actual), actual.containsAll(expected));
+            assertEquals(expected.toString(), actual.toString());
         } catch (Exception e){
             //else print Stacktrace and fail
             e.printStackTrace();
@@ -140,7 +141,7 @@ public class AppTest extends AppController{
             actual = ctrl.getTopHeadlinesAustria();
 
             //check if both lists are identical
-            assertEquals(expected.containsAll(actual), actual.containsAll(expected));
+            assertEquals(expected.toString(), actual.toString());
         } catch (Exception e){
             //else print Stacktrace and fail
             e.printStackTrace();
@@ -180,7 +181,7 @@ public class AppTest extends AppController{
             actual = filterList("ukrai", ctrl.getArticles());
 
             //check if both lists are identical
-            assertEquals(expected.containsAll(actual), actual.containsAll(expected));
+            assertEquals(expected.toString(), actual.toString());
         } catch (Exception e){
             //else print Stacktrace and fail
             e.printStackTrace();
@@ -193,15 +194,15 @@ public class AppTest extends AppController{
     public void filterListCr(){
         try {
             //Add articles to expected List
+            expected.add(new Article("Amit Mudgill", "Top cryptocurrency prices today: Bitcoin Ethereum, BNB recover after up to 8% plunge"));
             expected.add(new Article("Henry Saker-Clark", "Omicron cuts into sales momentum at Zara owner Inditex"));
             expected.add(new Article("Medha Singh", "Cryptoverse: bitcoin's scared of commitment, Mr Biden"));
-            expected.add(new Article("Amit Mudgill", "Top cryptocurrency prices today: Bitcoin Ethereum, BNB recover after up to 8% plunge"));
 
             //Get filtered List about 'cr' from AppController
             actual = filterList("cr", ctrl.getArticles());
 
             //check if both lists are identical
-            assertEquals(expected.containsAll(actual), actual.containsAll(expected));
+            assertEquals(expected.toString(), actual.toString());
         } catch (Exception e){
             //else print Stacktrace and fail
             e.printStackTrace();
