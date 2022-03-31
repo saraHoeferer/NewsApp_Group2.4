@@ -23,7 +23,7 @@ public class AppTest extends AppController{
 
     @Test
     @DisplayName("SetArticles with Expected List")
-    public void setArticles(){
+    public void setArticlesTest(){
         try {
             //Add articles to expected List
             expected.add(new Article("Hayley Maguire", "How Austrian states are preparing for Ukrainian refugees"));
@@ -121,7 +121,7 @@ public class AppTest extends AppController{
     }
 
     @Test
-    @DisplayName("Check Top Headlines Austria")
+    @DisplayName("Check Top Headlines Austria full list")
     public void getTopHeadlinesAustriaTest(){
         try {
             //Add articles to expected List
@@ -141,6 +141,25 @@ public class AppTest extends AppController{
 
             //check if both lists are identical
             assertEquals(expected.containsAll(actual), actual.containsAll(expected));
+        } catch (Exception e){
+            //else print Stacktrace and fail
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    @DisplayName("Check Top Headlines Austria empty list")
+    public void getTopHeadlinesAustriaTest2(){
+        try {
+            //Add articles to expected List
+            ctrl.setArticles(expected);
+
+            //Get All Top News from AppController
+            actual = ctrl.getTopHeadlinesAustria();
+
+            //check if both lists are identical
+            assertEquals(0, actual.size());
         } catch (Exception e){
             //else print Stacktrace and fail
             e.printStackTrace();

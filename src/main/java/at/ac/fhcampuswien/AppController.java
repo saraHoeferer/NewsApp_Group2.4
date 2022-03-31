@@ -1,45 +1,61 @@
 package at.ac.fhcampuswien;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class AppController {
+    //instance variable
     private List <Article> articles;
 
-
+    //constructor
     public AppController(){
         articles = new ArrayList<>();
         articles = this.generateMockList();
     }
 
+    //Setter
     public void setArticles (List <Article> articles){ this.articles = articles; }
 
+    //get amount of articles
     public int getArticleCount () {
-        if (articles == null){
+        //if list is empty return 0
+        if (articles.isEmpty()){
             return 0;
         } else {
+            //else return list size
             return articles.size();
         }
     }
+
+    //getter for article list
     public List <Article> getArticles(){
         return articles;
     }
 
+    //get all news
     public List <Article> getTopHeadlinesAustria (){
+        //if list is empty return empty list
+        if (articles.isEmpty()){
+            return List.of();
+        } else {
+            //else return list
+            return articles;
+        }
+
         /*List<Article> topHeadLines = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) { //die ersten 3 Schlagzeilen
             topHeadLines.add(articles.get(i)); //leere Liste topHeadLines mit den ersten 3 Artikel der article Liste befüllen
         }
         */
-        return articles;
     }
 
+    //return all news about bitcoin
     public List <Article> getAllNewsBitcoin () {
         return filterList("bitcoin", articles);
     }
 
+    //filter article list for certain keyword
     protected static List<Article> filterList(String query, List <Article> articles) { // takes String for requested phrase and list of articles
         List <Article> filteredList = new ArrayList(); // create new empty array list
         for(Article article: articles){ // go through all articles with for each loop
@@ -50,6 +66,7 @@ public class AppController {
         return filteredList; // return the filtered list
     }
 
+    //return a mocklist
     private List <Article> generateMockList(){
         articles.add(new Article("Hayley Maguire", "How Austrian states are preparing for Ukrainian refugees"));
         articles.add(new Article("Hayley Maguire", "'The pandemic has not been mastered': Vienna to tighten Covid measures"));
@@ -63,5 +80,4 @@ public class AppController {
         articles.add(new Article("AP news wire", "Shiffrin 5th after Olympic combined downhill; has medal shot"));
         return articles;
     }
-
 }
