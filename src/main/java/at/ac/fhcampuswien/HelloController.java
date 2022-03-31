@@ -2,16 +2,12 @@ package at.ac.fhcampuswien;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.TextAlignment;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -29,9 +25,6 @@ public class HelloController {
 
     @FXML
     private Button buttonHome;
-
-    @FXML
-    private Label labelText;
 
     @FXML
     private ImageView calcImage;
@@ -60,6 +53,7 @@ public class HelloController {
     private AppController ctrl = new AppController();
     private List <Article> articles = new ArrayList<Article>();
 
+    //shows all news about bitcoin in textarea
     public void getNewsBitcoin(){
         StringJoiner joiner = new StringJoiner("\n\n");
         articles = ctrl.getAllNewsBitcoin();
@@ -69,6 +63,7 @@ public class HelloController {
         text.setText(joiner.toString());
     }
 
+    //shows all news in textarea
     public void getTopNews(){
         StringJoiner joiner = new StringJoiner("\n\n");
         articles = ctrl.getTopHeadlinesAustria();
@@ -81,6 +76,7 @@ public class HelloController {
 
     }
 
+    //shows amount of articles in textarea
     public void getArticleCount(){
         int number = 0;
         number = ctrl.getArticleCount();
@@ -91,10 +87,12 @@ public class HelloController {
         Platform.exit();
     }
 
+    //shows welcome text in textarea
     public void printHello(){
         text.setText("Willkommen auf der NewsApp der Gruppe 2/4\n\nCreators: Christiane Haider - Sophia Hölzl - Sara Höferer");
     }
 
+    //change color when mouse hovers over button
     public void changeColor(MouseEvent event) {
         if (event.getSource().equals(buttonCount)) {
             buttonCount.setStyle("-fx-background-color: #ffffff; -fx-text-fill: black");
@@ -114,6 +112,7 @@ public class HelloController {
         }
     }
 
+    //changes color back after mouse exits button
     public void changeColorBack(MouseEvent event){
         if (event.getSource().equals(buttonCount)) {
             buttonCount.setStyle("-fx-background-color: #56419c; -fx-border-color: #ffffff");
@@ -131,7 +130,5 @@ public class HelloController {
             buttonLeave.setStyle("-fx-background-color: #56419c; -fx-border-color: #ffffff");
             exitImage.setImage(new Image("file:src/main/resources/at/ac/fhcampuswien/exitLight.png"));
         }
-
-
     }
 }
