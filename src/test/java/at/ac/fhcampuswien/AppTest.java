@@ -81,10 +81,11 @@ public class AppTest extends AppController{
     }
 
     @Test
-    @DisplayName("CountArticles with empty list")
-    public void getArticleCountEmptyList(){
+    @DisplayName("CountArticles with null list")
+    public void getArticleCountNullList(){
        try {
            //set empty expected List as articles
+           expected = null;
            ctrl.setArticles(expected);
 
            //Get Article count from AppController
@@ -97,6 +98,25 @@ public class AppTest extends AppController{
            e.printStackTrace();
            fail();
        }
+    }
+
+    @Test
+    @DisplayName("CountArticles with empty list")
+    public void getArticleCountEmptyList(){
+        try {
+            //set empty expected List as articles
+            ctrl.setArticles(expected);
+
+            //Get Article count from AppController
+            int cnt = ctrl.getArticleCount();
+
+            //check if count equals 0 because of empty List
+            assertEquals(0, cnt);
+        } catch (Exception e) {
+            //else print Stacktrace and fail
+            e.printStackTrace();
+            fail();
+        }
     }
 
     @Test
@@ -169,6 +189,26 @@ public class AppTest extends AppController{
     }
 
     @Test
+    @DisplayName("Check Top Headlines Austria null list")
+    public void getTopHeadlinesAustriaTest3(){
+        try {
+            //Add articles to expected List
+            expected = null;
+            ctrl.setArticles(expected);
+
+            //Get All Top News from AppController
+            actual = ctrl.getTopHeadlinesAustria();
+
+            //check if both lists are identical
+            assertEquals(0, actual.size());
+        } catch (Exception e){
+            //else print Stacktrace and fail
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
     @DisplayName("Check filter List with query 'Ukrai'")
     public void filterListUkrai(){
         try {
@@ -200,6 +240,27 @@ public class AppTest extends AppController{
 
             //Get filtered List about 'cr' from AppController
             actual = filterList("cr", ctrl.getArticles());
+
+            //check if both lists are identical
+            assertEquals(expected.toString(), actual.toString());
+        } catch (Exception e){
+            //else print Stacktrace and fail
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    @DisplayName("Check filter List with query 'cr'")
+    public void filterListUpperCaseCR(){
+        try {
+            //Add articles to expected List
+            expected.add(new Article("Amit Mudgill", "Top cryptocurrency prices today: Bitcoin Ethereum, BNB recover after up to 8% plunge"));
+            expected.add(new Article("Henry Saker-Clark", "Omicron cuts into sales momentum at Zara owner Inditex"));
+            expected.add(new Article("Medha Singh", "Cryptoverse: bitcoin's scared of commitment, Mr Biden"));
+
+            //Get filtered List about 'cr' from AppController
+            actual = filterList("Cr", ctrl.getArticles());
 
             //check if both lists are identical
             assertEquals(expected.toString(), actual.toString());

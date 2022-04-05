@@ -19,7 +19,8 @@ public class AppController {
     //get amount of articles
     public int getArticleCount () {
         //if list is empty return 0
-        if (articles.isEmpty()){
+        //null exception missing
+        if (articles == null){
             return 0;
         } else {
             //else return list size
@@ -35,7 +36,7 @@ public class AppController {
     //get all news
     public List <Article> getTopHeadlinesAustria (){
         //if list is empty return empty list
-        if (articles.isEmpty()){
+        if (articles == null){
             return List.of();
         } else {
             //else return list
@@ -58,6 +59,7 @@ public class AppController {
     //filter article list for certain keyword
     protected static List<Article> filterList(String query, List <Article> articles) { // takes String for requested phrase and list of articles
         List <Article> filteredList = new ArrayList(); // create new empty array list
+        query = query.toLowerCase();
         for(Article article: articles){ // go through all articles with for each loop
             if(article.getTitle().toLowerCase().contains(query)){ // cast title of article to lower case and look up if it contains the query
                 filteredList.add(article); // if title contains query add to the new array list
