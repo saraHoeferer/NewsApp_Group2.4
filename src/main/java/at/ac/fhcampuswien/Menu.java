@@ -46,17 +46,17 @@ public class Menu {
 
     //get amount of articles
     private void getArticleCount(AppController ctrl){
-        System.out.println(controller.getArticleCount());
+        //System.out.println(controller.getArticleCount());
     }
 
     //get all news
     private void getTopHeadlinesAustria(AppController ctrl){
-        System.out.println(controller.getTopHeadlinesAustria());
+        //System.out.println(controller.getTopHeadlinesAustria());
     }
 
     //get all news about bitcoin
     private void getAllNewsBitcoin(AppController ctrl){
-        System.out.println(controller.getAllNewsBitcoin());
+        //System.out.println(controller.getAllNewsBitcoin());
     }
 
     //prints exit message

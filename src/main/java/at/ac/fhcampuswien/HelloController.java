@@ -8,6 +8,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -52,9 +54,10 @@ public class HelloController {
 
     private AppController ctrl = new AppController();
     private List <Article> articles = new ArrayList<Article>();
+    private NewsResponse response = new NewsResponse();
 
     //shows all news about bitcoin in textarea
-    public void getNewsBitcoin(){
+    public void getNewsBitcoin() throws IOException {
         StringJoiner joiner = new StringJoiner("\n\n");
         articles = ctrl.getAllNewsBitcoin();
         for (Article article: articles) {
@@ -64,7 +67,7 @@ public class HelloController {
     }
 
     //shows all news in textarea
-    public void getTopNews(){
+    public void getTopNews() throws IOException {
         StringJoiner joiner = new StringJoiner("\n\n");
         articles = ctrl.getTopHeadlinesAustria();
         for (Article article: articles) {
@@ -77,7 +80,7 @@ public class HelloController {
     }
 
     //shows amount of articles in textarea
-    public void getArticleCount(){
+    public void getArticleCount() throws IOException {
         int number = 0;
         number = ctrl.getArticleCount();
         text.setText("Derzeit haben wir " + number + " Artikel auf unserer NewsApp");

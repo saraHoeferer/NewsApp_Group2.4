@@ -3,8 +3,10 @@ package at.ac.fhcampuswien;
 public class Article {
 
     //instance variables
-    private String author;
-    private String title;
+    public String author;
+    public String title;
+    public String url;
+    public String publishedAt;
 
     //constructor
     public Article(String author, String title) {
@@ -24,7 +26,12 @@ public class Article {
     //Override to string method so String looks like "Title: X, Author: X"
     @Override
     public String toString(){
-        String string = "Title: " + title + ", Author: " + author;
-        return string;
+        if (author == null){
+            author = "No Author";
+        }
+
+        publishedAt = publishedAt.substring(0, publishedAt.indexOf("T"));
+
+        return "Title: " + title + ", Author: " + author + "\nURL: " + url + "\nPublished at: " +publishedAt;
     }
 }
