@@ -1,60 +1,91 @@
 package at.ac.fhcampuswien;
 
-import com.google.gson.Gson;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
+import at.ac.fhcampuswien.enumerations.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import java.io.IOException;
 import java.net.URL;
 
 
 public class NewsApi {
-    private final String appKey = "6993410ad3df42c89bbb4c8b3b015172";
 
+    //execute the get Request of specific url and return response
     private String doGetRequest(URL url) throws IOException {
+        //create a client
         OkHttpClient client = new OkHttpClient();
+        //create a request
         Request request = new Request.Builder()
                 .url(url)
                 .build();
+        //create response by executing the request through client
         Response response = client.newCall(request).execute();
+        //return request body (content) as String (json)
         return response.body().string();
     }
 
-    public URL buildUrlTop(String query, String country, String category){
+    //create and return specific url
+    public URL buildUrlTop(Endpoint endpoint, String query, Country country , Category category){
+        //AppKey from NewsApi login
+        String apiKey = "6993410ad3df42c89bbb4c8b3b015172";
+
+        //create new URL Builder
         URL url = new HttpUrl.Builder()
+                //add scheme
                 .scheme("https")
+                //add host
                 .host("newsapi.org")
+                //add Path
                 .addPathSegment("v2")
-                .addPathSegment("top-headlines")
+                .addPathSegment(endpoint.getEndpoint())
+                //add required/wished queries
                 .addQueryParameter("q", query)
-                .addQueryParameter("country", country)
-                .addQueryParameter("category", category)
-                .addQueryParameter("apiKey", appKey)
+                .addQueryParameter("country", country.getCountry())
+                .addQueryParameter("category", category.getCategory())
+                //add apiKey (important, without apikey whole request doesn't work)
+                .addQueryParameter("apiKey", apiKey)
+                //build url
                 .build().url();
         return url;
     }
 
-    public URL buildUrlEverything (String query, String language, String sortBy){
-        URL url = new HttpUrl.Builder()
-                .scheme("https")
-                .host("newsapi.org")
-                .addPathSegment("v2")
-                .addPathSegment("everything")
-                .addQueryParameter("q", query)
-                .addQueryParameter("language", language)
-                .addQueryParameter("sortBy", sortBy)
-                .addQueryParameter("apiKey", appKey)
-                .build().url();
-        return url;
+    public URL buildUrlEverything(Endpoint endpoint, String query, Language language , SortBy sortBy){
+        //AppKey from NewsApi login
+        String apiKey = "6993410ad3df42c89bbb4c8b3b015172";
+
+        if (query != null) {
+            //create new URL Builder
+            URL url = new HttpUrl.Builder()
+                    //add scheme
+                    .scheme("https")
+                    //add host
+                    .host("newsapi.org")
+                    //add Path
+                    .addPathSegment("v2")
+                    .addPathSegment(endpoint.getEndpoint())
+                    //add required/wished queries
+                    .addQueryParameter("q", query)
+                    .addQueryParameter("language", language.getLanguage())
+                    .addQueryParameter("sortBy", sortBy.getSort())
+                    //add apiKey (important, without apikey whole request doesn't work)
+                    .addQueryParameter("apiKey", apiKey)
+                    //build url
+                    .build().url();
+            return url;
+        } else {
+            return null;
+        }
     }
 
     public NewsResponse getResponse (URL url) throws IOException {
-        Gson gson = new Gson();
+        //get response from specific url
         String response = doGetRequest(url);
-        NewsResponse responesArray = gson.fromJson(response, NewsResponse.class);
-        return responesArray;
+        //map response values (json values) to NewsResponse Object variables via Jackson
+        NewsResponse responses = new ObjectMapper().readValue(response, NewsResponse.class);
+        //return filled NewsResponse Object
+        return responses;
     }
 }
 

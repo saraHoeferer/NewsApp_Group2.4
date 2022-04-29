@@ -52,9 +52,8 @@ public class HelloController {
     @FXML
     private TextArea text;
 
-    private AppController ctrl = new AppController();
+    private final AppController ctrl = new AppController();
     private List <Article> articles = new ArrayList<Article>();
-    private NewsResponse response = new NewsResponse();
 
     //shows all news about bitcoin in textarea
     public void getNewsBitcoin() throws IOException {
@@ -81,7 +80,7 @@ public class HelloController {
 
     //shows amount of articles in textarea
     public void getArticleCount() throws IOException {
-        int number = 0;
+        int number;
         number = ctrl.getArticleCount();
         text.setText("Derzeit haben wir " + number + " Artikel auf unserer NewsApp");
     }

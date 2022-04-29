@@ -23,10 +23,5 @@ public class App extends Application {
     public static void main(String[] args) {
         //launch JavaFX Application
         launch();
-
-        //launch Console Application
-        //Menu mu = new Menu();
-        //mu.start();
-        //Platform.exit();
     }
 }

@@ -1,6 +1,6 @@
 package at.ac.fhcampuswien;
 
-import javafx.scene.control.TableColumn;
+import at.ac.fhcampuswien.enumerations.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,11 +26,16 @@ public class AppController {
     //get amount of articles
     public int getArticleCount () throws IOException {
         int count = 0;
+
+        //get articles TopHeadlines
         articles = getTopHeadlinesAustria();
         count += articles.size();
+
+        //get articles bitcoin
         articles = getAllNewsBitcoin();
         count += articles.size();
 
+        //return sum
         return count;
     }
 
@@ -41,16 +46,22 @@ public class AppController {
 
     //get all news
     public List<Article> getTopHeadlinesAustria () throws IOException {
-        URL url = api.buildUrlTop("", "au", "");
+        //build specific url for endpoint Top-Headlines
+        URL url = api.buildUrlTop(Endpoint.TOPHEADLINES, "", Country.AUSTRIA, Category.NONE);
+        //get response
         response = api.getResponse(url);
+        //set articles list form articles of response
         articles = response.getArticles();
         return articles;
     }
 
     //return all news about bitcoin
     public List <Article> getAllNewsBitcoin () throws IOException {
-        URL url1 = api.buildUrlEverything("bitcoin", "de", "");
+        //build specific url for Endpoint Everything
+        URL url1 = api.buildUrlEverything(Endpoint.EVERYTHING, "bitcoin", Language.ENGLISH, SortBy.NONE);
+        //get response
         response = api.getResponse(url1);
+        //set articles list form articles of response
         articles = response.getArticles();
         return articles;
     }
