@@ -46,7 +46,7 @@ public class NewsApi {
         return builder.addQueryParameter("apiKey", apiKey).build().url();
     }
 
-    //create and return specific url
+    //create and return specific url for top-headlines
     public URL buildUrlTop(Endpoint endpoint, String query, Country country , Category category){
         //Create URL Builder
         HttpUrl.Builder builder = new HttpUrl.Builder();
@@ -61,6 +61,7 @@ public class NewsApi {
         return url;
     }
 
+    //create and return specific url for everything
     public URL buildUrlEverything(Endpoint endpoint, String query, Language language , SortBy sortBy){
         //if query is null or empty null gets returned
         if (query == null || query.equals("")) {
