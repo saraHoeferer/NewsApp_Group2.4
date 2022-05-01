@@ -59,20 +59,31 @@ public class HelloController {
     public void getNewsBitcoin() throws IOException {
         StringJoiner joiner = new StringJoiner("\n\n");
         articles = ctrl.getAllNewsBitcoin();
-        for (Article article: articles) {
-            joiner.add(article.toString());
+        if (articles != null) {
+            for (Article article : articles) {
+                joiner.add(article.toString());
+            }
+            text.setText(joiner.toString());
+        } else {
+            text.setText("Derzeit keine Artikel vorhanden.");
         }
-        text.setText(joiner.toString());
+        paneText.setContent(text);
+        paneText.setFitToHeight(true);
+
     }
 
     //shows all news in textarea
     public void getTopNews() throws IOException {
         StringJoiner joiner = new StringJoiner("\n\n");
         articles = ctrl.getTopHeadlinesAustria();
-        for (Article article: articles) {
-            joiner.add(article.toString());
+        if (articles != null) {
+            for (Article article : articles) {
+                joiner.add(article.toString());
+            }
+            text.setText(joiner.toString());
+        } else {
+            text.setText("Derzeit keine Artikel vorhanden.");
         }
-        text.setText(joiner.toString());
         paneText.setContent(text);
         paneText.setFitToHeight(true);
 
