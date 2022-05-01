@@ -41,6 +41,15 @@ public class AppController {
 
         //return sum
         return count;
+
+        //old function, if you only want count of category
+        /*
+        if (articles != null){
+            return articles.size();
+        } else {
+            return 0;
+        }
+         */
     }
 
     //getter for article list
