@@ -108,7 +108,7 @@ public class HelloController {
     public void getArticleCount() throws IOException {
         int number;
         number = ctrl.getArticleCount();
-        text.setText("Derzeit haben wir " + number + "Artikel auf unsere NewsApp.");
+        text.setText("Derzeit haben wir " + number + " Artikel auf unsere NewsApp.");
 
         //if you only want to show article count of a specific category, not the whole NewsApp
         /*
