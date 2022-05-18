@@ -30,14 +30,27 @@ public class AppController {
 
         //get articles TopHeadlines
         articles = getTopHeadlinesAustria();
-        count += articles.size();
+        if (articles != null) {
+            count += articles.size();
+        }
 
         //get articles bitcoin
         articles = getAllNewsBitcoin();
-        count += articles.size();
+        if (articles != null) {
+            count += articles.size();
+        }
 
         //return sum
         return count;
+
+        //old function, if you only want count of category
+        /*
+        if (articles != null){
+            return articles.size();
+        } else {
+            return 0;
+        }
+         */
     }
 
     //getter for article list
@@ -61,11 +74,17 @@ public class AppController {
     //return all news about bitcoin
     public List <Article> getAllNewsBitcoin () throws IOException {
         //build specific url for Endpoint Everything
-        URL url1 = api.buildUrlEverything(Endpoint.EVERYTHING, "bitcoin", Language.ENGLISH, SortBy.NONE);
-        //get response
-        response = api.getResponse(url1);
-        //set articles list form articles of response
-        articles = response.getArticles();
+        URL url = api.buildUrlEverything(Endpoint.EVERYTHING, "bitcoin", Language.GERMAN, SortBy.NONE);
+        //if url null (because query is empty or null
+        if (url == null){
+            //set articles to null
+            articles = null;
+        } else {
+            //get response
+            response = api.getResponse(url);
+            //set articles list form articles of response
+            articles = response.getArticles();
+        }
         return articles;
     }
 

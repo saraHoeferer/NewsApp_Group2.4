@@ -54,16 +54,32 @@ public class HelloController {
 
     private final AppController ctrl = new AppController();
     private List <Article> articles = new ArrayList<Article>();
+    /*
+    private boolean top = false;
+    private boolean every = false;
+     */
 
     //Exception
     //shows all news about bitcoin in textarea
     public void getNewsBitcoin() throws IOException {
         StringJoiner joiner = new StringJoiner("\n\n");
         articles = ctrl.getAllNewsBitcoin();
-        for (Article article: articles) {
-            joiner.add(article.toString());
+        if (articles != null && articles.size() != 0) {
+            for (Article article : articles) {
+                joiner.add(article.toString());
+            }
+            text.setText(joiner.toString());
+        } else {
+            text.setText("Derzeit keine Artikel vorhanden.");
         }
-        text.setText(joiner.toString());
+        paneText.setContent(text);
+        paneText.setFitToHeight(true);
+
+        //whether bitcoin was pressed or not
+        /*
+        every = true;
+        top = false;
+         */
     }
 
     //Exception
@@ -71,12 +87,22 @@ public class HelloController {
     public void getTopNews() throws IOException {
         StringJoiner joiner = new StringJoiner("\n\n");
         articles = ctrl.getTopHeadlinesAustria();
-        for (Article article: articles) {
-            joiner.add(article.toString());
+        if (articles != null && articles.size() != 0) {
+            for (Article article : articles) {
+                joiner.add(article.toString());
+            }
+            text.setText(joiner.toString());
+        } else {
+            text.setText("Derzeit keine Artikel vorhanden.");
         }
-        text.setText(joiner.toString());
         paneText.setContent(text);
         paneText.setFitToHeight(true);
+
+        //whether top headlines was pressed or not
+        /*
+        top = true;
+        every = false;
+         */
 
     }
 
@@ -85,7 +111,18 @@ public class HelloController {
     public void getArticleCount() throws IOException {
         int number;
         number = ctrl.getArticleCount();
-        text.setText("Derzeit haben wir " + number + " Artikel auf unserer NewsApp");
+        text.setText("Derzeit haben wir " + number + " Artikel auf unsere NewsApp.");
+
+        //if you only want to show article count of a specific category, not the whole NewsApp
+        /*
+        if (top) {
+            text.setText("Derzeit haben wir " + number + " Artikel zu Top-Headlines Austria auf unserer NewsApp.");
+        } else if (every){
+            text.setText("Derzeit haben wir " + number + " Artikel zum Thema Bitcoin auf unserer NewsApp.");
+        } else {
+            text.setText("Sie müssen zuerst eine Kategorie auswählen bevor Sie die Artikelanzahl davon sehen können.");
+        }
+        */
     }
 
     public void leaveApp(){

@@ -9,8 +9,9 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.net.URL;
 
-
 public class NewsApi {
+    //AppKey from NewsApi login
+    private String apiKey = "6993410ad3df42c89bbb4c8b3b015172";
 
     //execute the get Request of specific url and return response
     //Exception - alle
@@ -27,56 +28,57 @@ public class NewsApi {
         return response.body().string();
     }
 
-    //create and return specific url
-    public URL buildUrlTop(Endpoint endpoint, String query, Country country , Category category){
-        //AppKey from NewsApi login
-        String apiKey = "6993410ad3df42c89bbb4c8b3b015172";
-
-        //create new URL Builder
-        URL url = new HttpUrl.Builder()
+    //create Start of url which is has the same scheme for all request
+    private void createStart (HttpUrl.Builder builder, Endpoint endpoint, String query){
+        builder
                 //add scheme
                 .scheme("https")
                 //add host
                 .host("newsapi.org")
-                //add Path
-                .addPathSegment("v2")
-                .addPathSegment(endpoint.getEndpoint())
-                //add required/wished queries
-                .addQueryParameter("q", query)
+                //add path (either everything or top-headlines)
+                .addPathSegments("v2/"+endpoint.getEndpoint())
+                //add query
+                .addQueryParameter("q", query);
+    }
+
+    //Create End of URL
+    private URL createEnd (HttpUrl.Builder builder){
+        //Add ApiKey and build to URL
+        return builder.addQueryParameter("apiKey", apiKey).build().url();
+    }
+
+    //create and return specific url for top-headlines
+    public URL buildUrlTop(Endpoint endpoint, String query, Country country , Category category){
+        //Create URL Builder
+        HttpUrl.Builder builder = new HttpUrl.Builder();
+        //add start of url
+        createStart(builder, endpoint, query);
+        //add specific query parameters
+        builder
                 .addQueryParameter("country", country.getCountry())
-                .addQueryParameter("category", category.getCategory())
-                //add apiKey (important, without apikey whole request doesn't work)
-                .addQueryParameter("apiKey", apiKey)
-                //build url
-                .build().url();
+                .addQueryParameter("category", category.getCategory());
+        //add ApiKey and build full URL
+        URL url = createEnd(builder);
         return url;
     }
 
+    //create and return specific url for everything
     public URL buildUrlEverything(Endpoint endpoint, String query, Language language , SortBy sortBy){
-        //AppKey from NewsApi login
-        String apiKey = "6993410ad3df42c89bbb4c8b3b015172";
-
-        if (query != null) {
-            //create new URL Builder
-            URL url = new HttpUrl.Builder()
-                    //add scheme
-                    .scheme("https")
-                    //add host
-                    .host("newsapi.org")
-                    //add Path
-                    .addPathSegment("v2")
-                    .addPathSegment(endpoint.getEndpoint())
-                    //add required/wished queries
-                    .addQueryParameter("q", query)
-                    .addQueryParameter("language", language.getLanguage())
-                    .addQueryParameter("sortBy", sortBy.getSort())
-                    //add apiKey (important, without apikey whole request doesn't work)
-                    .addQueryParameter("apiKey", apiKey)
-                    //build url
-                    .build().url();
-            return url;
+        //if query is null or empty null gets returned
+        if (query == null || query.equals("")) {
+           return null;
         } else {
-            return null;
+            //Create URL Builder
+            HttpUrl.Builder builder = new HttpUrl.Builder();
+            //add start of url
+            createStart(builder, endpoint, query);
+            //add specific query parameters
+            builder
+                    .addQueryParameter("language", language.getLanguage())
+                    .addQueryParameter("sortBy", sortBy.getSort());
+            //add ApiKey and build full URL
+            URL url = createEnd(builder);
+            return url;
         }
     }
 

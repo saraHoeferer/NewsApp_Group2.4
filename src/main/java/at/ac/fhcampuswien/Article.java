@@ -77,7 +77,7 @@ public class Article {
         this.content = content;
     }
 
-    //Override to string method so String looks like "Title: X, Author: X"
+    //Override to string method so String looks like "Title: X, Author: X, Published at: X, URL"
     @Override
     public String toString(){
         //if author is not declared
