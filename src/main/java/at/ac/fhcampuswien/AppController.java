@@ -23,7 +23,8 @@ public class AppController {
     //Setter
     public void setArticles (List <Article> articles){ this.articles = articles; }
 
-    //get amount of articles
+    //Exception
+    //get amount of articles - Sara
     public int getArticleCount () throws IOException {
         int count = 0;
 
@@ -44,6 +45,7 @@ public class AppController {
         return articles;
     }
 
+    //Exception - Sophia
     //get all news
     public List<Article> getTopHeadlinesAustria () throws IOException {
         //build specific url for endpoint Top-Headlines
@@ -55,6 +57,7 @@ public class AppController {
         return articles;
     }
 
+    //Exception - Chrisi
     //return all news about bitcoin
     public List <Article> getAllNewsBitcoin () throws IOException {
         //build specific url for Endpoint Everything

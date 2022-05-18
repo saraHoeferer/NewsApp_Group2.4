@@ -13,6 +13,7 @@ import java.net.URL;
 public class NewsApi {
 
     //execute the get Request of specific url and return response
+    //Exception - alle
     private String doGetRequest(URL url) throws IOException {
         //create a client
         OkHttpClient client = new OkHttpClient();
@@ -79,6 +80,7 @@ public class NewsApi {
         }
     }
 
+    //Exception/try and catch - alle
     public NewsResponse getResponse (URL url) throws IOException {
         //get response from specific url
         String response = doGetRequest(url);

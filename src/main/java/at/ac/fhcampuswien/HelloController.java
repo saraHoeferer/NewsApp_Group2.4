@@ -55,6 +55,7 @@ public class HelloController {
     private final AppController ctrl = new AppController();
     private List <Article> articles = new ArrayList<Article>();
 
+    //Exception
     //shows all news about bitcoin in textarea
     public void getNewsBitcoin() throws IOException {
         StringJoiner joiner = new StringJoiner("\n\n");
@@ -65,6 +66,7 @@ public class HelloController {
         text.setText(joiner.toString());
     }
 
+    //Exception
     //shows all news in textarea
     public void getTopNews() throws IOException {
         StringJoiner joiner = new StringJoiner("\n\n");
@@ -78,6 +80,7 @@ public class HelloController {
 
     }
 
+    //Exception
     //shows amount of articles in textarea
     public void getArticleCount() throws IOException {
         int number;
