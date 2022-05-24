@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -54,75 +55,74 @@ public class HelloController {
 
     private final AppController ctrl = new AppController();
     private List <Article> articles = new ArrayList<Article>();
-    /*
-    private boolean top = false;
-    private boolean every = false;
-     */
+    private NewsResponse response;
 
     //Exception
     //shows all news about bitcoin in textarea
-    public void getNewsBitcoin() throws IOException {
-        StringJoiner joiner = new StringJoiner("\n\n");
-        articles = ctrl.getAllNewsBitcoin();
-        if (articles != null && articles.size() != 0) {
-            for (Article article : articles) {
-                joiner.add(article.toString());
-            }
-            text.setText(joiner.toString());
-        } else {
-            text.setText("Derzeit keine Artikel vorhanden.");
+    public void getNewsBitcoin(){
+        response = null;
+        try {
+            response = ctrl.getAllNewsBitcoin();
+        } catch (UnknownHostException e){
+            text.setText("Überprüfe deine Internetverbindung.");
+        } catch (NewsApiExceptions e){
+            text.setText(e.getMessage());
+        } catch (IOException e){
+            text.setText("da ist etwas schiefgegangen, da gab es einen IO Exception Fehler: " + e.getMessage());
+        } catch (Exception e){
+            text.setText("da ist etwas schiefgegangen, da gab es einen Fehler: " + e.getMessage());
         }
-        paneText.setContent(text);
-        paneText.setFitToHeight(true);
-
-        //whether bitcoin was pressed or not
-        /*
-        every = true;
-        top = false;
-         */
+        printArticle(response);
     }
 
     //Exception
     //shows all news in textarea
-    public void getTopNews() throws IOException {
+    public void getTopNews(){
+        response = null;
+        try {
+            response = ctrl.getTopHeadlinesAustria();
+        } catch (UnknownHostException e){
+            text.setText("Überprüfe deine Internetverbindung.");
+        } catch (NewsApiExceptions e){
+            text.setText(e.getMessage());
+        } catch (IOException e){
+            text.setText("da ist etwas schiefgegangen, da gab es einen IO Exception Fehler: " + e.getMessage());
+        } catch (Exception e){
+            text.setText("da ist etwas schiefgegangen, da gab es einen Fehler: " + e.getMessage());
+        }
+        printArticle(response);
+    }
+
+    private void printArticle (NewsResponse response){
         StringJoiner joiner = new StringJoiner("\n\n");
-        articles = ctrl.getTopHeadlinesAustria();
-        if (articles != null && articles.size() != 0) {
-            for (Article article : articles) {
+        if (response != null &&response.getArticles() != null && response.getArticles().size() != 0) {
+            for (Article article : response.getArticles()) {
                 joiner.add(article.toString());
             }
             text.setText(joiner.toString());
-        } else {
-            text.setText("Derzeit keine Artikel vorhanden.");
+        } else if (response != null && response.getStatus().equals("ok") && response.getArticles().size() == 0){
+            text.setText("Mit deiner Abfrage gab es leider keine Ergebnisse");
         }
         paneText.setContent(text);
         paneText.setFitToHeight(true);
-
-        //whether top headlines was pressed or not
-        /*
-        top = true;
-        every = false;
-         */
-
     }
 
     //Exception
     //shows amount of articles in textarea
-    public void getArticleCount() throws IOException {
+    public void getArticleCount(){
         int number;
-        number = ctrl.getArticleCount();
-        text.setText("Derzeit haben wir " + number + " Artikel auf unsere NewsApp.");
-
-        //if you only want to show article count of a specific category, not the whole NewsApp
-        /*
-        if (top) {
-            text.setText("Derzeit haben wir " + number + " Artikel zu Top-Headlines Austria auf unserer NewsApp.");
-        } else if (every){
-            text.setText("Derzeit haben wir " + number + " Artikel zum Thema Bitcoin auf unserer NewsApp.");
-        } else {
-            text.setText("Sie müssen zuerst eine Kategorie auswählen bevor Sie die Artikelanzahl davon sehen können.");
+        try {
+            number = ctrl.getArticleCount();
+            text.setText("Derzeit haben wir " + number + " Artikel auf unsere NewsApp.");
+        } catch (UnknownHostException e){
+            text.setText("Überprüfe deine Internetverbindung.");
+        } catch (NewsApiExceptions e){
+            text.setText(e.getMessage());
+        } catch (IOException e){
+            text.setText("da ist etwas schiefgegangen, da gab es einen IO Exception Fehler: " + e.getMessage());
+        } catch (Exception e){
+            text.setText("da ist etwas schiefgegangen, da gab es einen Fehler: " + e.getMessage());
         }
-        */
     }
 
     public void leaveApp(){

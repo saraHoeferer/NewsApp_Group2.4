@@ -25,6 +25,7 @@ public class NewsApi {
         //create response by executing the request through client
         Response response = client.newCall(request).execute();
         //return request body (content) as String (json)
+        //throw new IOException("test");
         return response.body().string();
     }
 
@@ -38,13 +39,8 @@ public class NewsApi {
                 //add path (either everything or top-headlines)
                 .addPathSegments("v2/"+endpoint.getEndpoint())
                 //add query
-                .addQueryParameter("q", query);
-    }
-
-    //Create End of URL
-    private URL createEnd (HttpUrl.Builder builder){
-        //Add ApiKey and build to URL
-        return builder.addQueryParameter("apiKey", apiKey).build().url();
+                .addQueryParameter("q", query)
+                .addQueryParameter("apiKey", apiKey);
     }
 
     //create and return specific url for top-headlines
@@ -58,36 +54,36 @@ public class NewsApi {
                 .addQueryParameter("country", country.getCountry())
                 .addQueryParameter("category", category.getCategory());
         //add ApiKey and build full URL
-        URL url = createEnd(builder);
+        URL url = builder.build().url();
         return url;
     }
 
     //create and return specific url for everything
     public URL buildUrlEverything(Endpoint endpoint, String query, Language language , SortBy sortBy){
         //if query is null or empty null gets returned
-        if (query == null || query.equals("")) {
-           return null;
-        } else {
-            //Create URL Builder
-            HttpUrl.Builder builder = new HttpUrl.Builder();
-            //add start of url
-            createStart(builder, endpoint, query);
-            //add specific query parameters
-            builder
-                    .addQueryParameter("language", language.getLanguage())
-                    .addQueryParameter("sortBy", sortBy.getSort());
-            //add ApiKey and build full URL
-            URL url = createEnd(builder);
-            return url;
-        }
+        //Create URL Builder
+        HttpUrl.Builder builder = new HttpUrl.Builder();
+        //add start of url
+        createStart(builder, endpoint, query);
+        //add specific query parameters
+        builder
+                .addQueryParameter("language", language.getLanguage())
+                //.addQueryParameter("country", "at")
+                .addQueryParameter("sortBy", sortBy.getSort());
+        //add ApiKey and build full URL
+        URL url = builder.build().url();
+        return url;
     }
 
     //Exception/try and catch - alle
-    public NewsResponse getResponse (URL url) throws IOException {
+    public NewsResponse getResponse (URL url) throws IOException, NewsApiExceptions {
         //get response from specific url
         String response = doGetRequest(url);
         //map response values (json values) to NewsResponse Object variables via Jackson
         NewsResponse responses = new ObjectMapper().readValue(response, NewsResponse.class);
+        if (responses.getStatus().equals("error")){
+            throw new NewsApiExceptions(responses.getMessage());
+        }
         //return filled NewsResponse Object
         return responses;
     }

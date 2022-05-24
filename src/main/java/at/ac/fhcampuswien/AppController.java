@@ -1,11 +1,14 @@
 package at.ac.fhcampuswien;
 
 import at.ac.fhcampuswien.enumerations.*;
+import okhttp3.HttpUrl;
 
 import java.io.IOException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AppController {
     //instance variable
@@ -17,7 +20,6 @@ public class AppController {
     public AppController(){
         articles = new ArrayList<>();
         api = new NewsApi();
-        response = new NewsResponse();
     }
 
     //Setter
@@ -25,32 +27,23 @@ public class AppController {
 
     //Exception
     //get amount of articles - Sara
-    public int getArticleCount () throws IOException {
+    public int getArticleCount () throws IOException, NewsApiExceptions {
         int count = 0;
 
         //get articles TopHeadlines
-        articles = getTopHeadlinesAustria();
-        if (articles != null) {
-            count += articles.size();
+        response = getTopHeadlinesAustria();
+        if (response.getArticles() != null) {
+            count += response.getArticles().size();
         }
 
         //get articles bitcoin
-        articles = getAllNewsBitcoin();
-        if (articles != null) {
-            count += articles.size();
+        response = getAllNewsBitcoin();
+        if (response.getArticles() != null) {
+            count += response.getArticles().size();
         }
 
         //return sum
         return count;
-
-        //old function, if you only want count of category
-        /*
-        if (articles != null){
-            return articles.size();
-        } else {
-            return 0;
-        }
-         */
     }
 
     //getter for article list
@@ -60,32 +53,31 @@ public class AppController {
 
     //Exception - Sophia
     //get all news
-    public List<Article> getTopHeadlinesAustria () throws IOException {
+    public NewsResponse getTopHeadlinesAustria () throws IOException, NewsApiExceptions {
         //build specific url for endpoint Top-Headlines
         URL url = api.buildUrlTop(Endpoint.TOPHEADLINES, "", Country.AUSTRIA, Category.NONE);
+        /*
+        try {
+            response = api.getResponse(url)
+        } catch (NewsApiExceptions e){
+            throw new NewsApiException(response);
+        } catch (IOException e) {
+            throw new IOException();
+        }
+        */
         //get response
         response = api.getResponse(url);
-        //set articles list form articles of response
-        articles = response.getArticles();
-        return articles;
+        return response;
     }
 
     //Exception - Chrisi
     //return all news about bitcoin
-    public List <Article> getAllNewsBitcoin () throws IOException {
+    public NewsResponse getAllNewsBitcoin () throws IOException, NewsApiExceptions {
         //build specific url for Endpoint Everything
-        URL url = api.buildUrlEverything(Endpoint.EVERYTHING, "bitcoin", Language.GERMAN, SortBy.NONE);
-        //if url null (because query is empty or null
-        if (url == null){
-            //set articles to null
-            articles = null;
-        } else {
-            //get response
-            response = api.getResponse(url);
-            //set articles list form articles of response
-            articles = response.getArticles();
-        }
-        return articles;
+        URL url = api.buildUrlEverything(Endpoint.EVERYTHING, "", Language.GERMAN, SortBy.NONE);
+        //get response
+        response = api.getResponse(url);
+        return response;
     }
 
 
