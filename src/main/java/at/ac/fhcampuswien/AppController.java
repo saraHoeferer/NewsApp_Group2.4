@@ -1,14 +1,9 @@
 package at.ac.fhcampuswien;
 
 import at.ac.fhcampuswien.enumerations.*;
-import okhttp3.HttpUrl;
-
 import java.io.IOException;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class AppController {
     //instance variable
@@ -74,7 +69,7 @@ public class AppController {
     //return all news about bitcoin
     public NewsResponse getAllNewsBitcoin () throws IOException, NewsApiExceptions {
         //build specific url for Endpoint Everything
-        URL url = api.buildUrlEverything(Endpoint.EVERYTHING, "", Language.GERMAN, SortBy.NONE);
+        URL url = api.buildUrlEverything(Endpoint.EVERYTHING, "bitcoin", Language.GERMAN, SortBy.NONE);
         //get response
         response = api.getResponse(url);
         return response;
