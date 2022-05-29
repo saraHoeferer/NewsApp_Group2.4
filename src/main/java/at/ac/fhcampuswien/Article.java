@@ -18,7 +18,11 @@ public class Article {
     }
 
     public void setAuthor(String author){
-        this.author = author;
+        if (author == null){
+            this.author = "No Author";
+        } else {
+            this.author = author;
+        }
     }
 
     public String getTitle(){
@@ -42,7 +46,7 @@ public class Article {
     }
 
     public void setPublishedAt (String publishedAt){
-        this.publishedAt = publishedAt;
+        this.publishedAt = publishedAt.substring(0, publishedAt.indexOf("T"));
     }
 
     public Source getSource(){
@@ -80,14 +84,6 @@ public class Article {
     //Override to string method so String looks like "Title: X, Author: X, Published at: X, URL"
     @Override
     public String toString(){
-        //if author is not declared
-        if (author == null){
-            author = "No Author";
-        }
-
-        //cut time from publishedAt String so it only shows date
-        publishedAt = publishedAt.substring(0, publishedAt.indexOf("T"));
-
-        return "Title: " + title + "\nAuthor: " + author + ", Published at: "+ publishedAt + "\n" + url;
+        return "Title: " + title + "\nAuthor: " + author + ", Published at: "+ publishedAt + "\n" + url + "\nContent: " + content;
     }
 }

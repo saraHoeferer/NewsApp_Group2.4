@@ -1,11 +1,23 @@
 package at.ac.fhcampuswien;
 
-public class NewsApiExceptions extends Exception{
-    NewsApiExceptions(){
-        super("Da ist etwas bei der NewsApi schiefgelaufen!");
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.io.IOException;
+
+public class NewsApiExceptions extends Exception {
+    NewsApiExceptions() {
+        super("Da ist etwas schiefgelaufen!");
     }
 
-    NewsApiExceptions (String message){
+    NewsApiExceptions(String message) {
         super(message);
+    }
+
+    NewsApiExceptions(IOException e) {
+        super(e.getMessage());
+    }
+
+    NewsApiExceptions(JsonProcessingException e) {
+        super(e.getMessage());
     }
 }
