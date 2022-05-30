@@ -3,7 +3,6 @@ package at.ac.fhcampuswien;
 import at.ac.fhcampuswien.enumerations.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
@@ -12,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class AppController {
     //instance variable
@@ -25,18 +25,10 @@ public class AppController {
 
     //Exception
     //get amount of articles - Sara
-    public int getArticleCount() throws NewsApiExceptions {
+    public int getArticleCount() {
         int count = 0;
 
-        //get articles TopHeadlines
-        response = getTopHeadlinesAustria();
-        if (response.getArticles() != null) {
-            count += response.getArticles().size();
-        }
-
-        //get articles bitcoin
-        response = getAllNewsBitcoin();
-        if (response.getArticles() != null) {
+        if (response != null) {
             count += response.getArticles().size();
         }
 
@@ -77,13 +69,23 @@ public class AppController {
         return response;
     }
 
-    public void downloadFile(String url) throws NewsApiExceptions {
-        api.downloadFileSync(url);
-        manipulateFile(url);
+    public void downloadFile(String url, String dirPath) throws NewsApiExceptions {
+        api.downloadFileSync(url, dirPath);
+        manipulateFile(url, dirPath);
     }
 
-    public void manipulateFile(String url) throws NewsApiExceptions {
-        File f = new File("C:\\test\\text.txt");
+    public void manipulateFile(String url, String dirPath) throws NewsApiExceptions {
+        Path textfilePath = Paths.get(dirPath);
+        File f = new File(dirPath);
+
+        if (!f.exists()) {
+            try {
+                Files.createFile(textfilePath);
+            } catch (IOException e){
+                throw new NewsApiExceptions(e);
+            }
+        }
+
         FileWriter writer;
         Document doc;
         try {

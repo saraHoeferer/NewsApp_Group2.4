@@ -10,7 +10,9 @@ import okhttp3.Response;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.PortUnreachableException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Objects;
 
 public class NewsApi {
@@ -36,19 +38,22 @@ public class NewsApi {
             } else {
                 return Objects.requireNonNull(response.body()).string();
             }
-        } catch (IOException e) {
+        } catch (UnknownHostException e){
+            throw new NewsApiExceptions(e);
+        }  catch (PortUnreachableException e){
+            throw new NewsApiExceptions(e);
+        }  catch (IOException e) {
             throw new NewsApiExceptions(e);
         }
     }
 
-    public void downloadFileSync(String downloadUrl) throws NewsApiExceptions {
-
+    public void downloadFileSync(String downloadUrl, String dirPath) throws NewsApiExceptions {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(downloadUrl).build();
         try {
             Response response = client.newCall(request).execute();
-            FileOutputStream fos = new FileOutputStream("C:\\test\\text.txt");
-            fos.write(response.body().bytes());
+            FileOutputStream fos = new FileOutputStream(dirPath);
+            fos.write(Objects.requireNonNull(response.body()).bytes());
             fos.close();
         } catch (IOException e) {
             throw new NewsApiExceptions(e);

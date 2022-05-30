@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
@@ -11,158 +11,224 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="581.0" prefWidth="770.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.HelloController">
-   <children>
-      <BorderPane prefHeight="480.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <top>
-            <HBox prefHeight="70.0" prefWidth="640.0" style="-fx-background-color: #3a1e96;" BorderPane.alignment="CENTER">
-               <children>
-                  <Label alignment="CENTER" contentDisplay="RIGHT" prefHeight="70.0" prefWidth="770.0" style="-fx-border-color: #ffffff;" text="NO FAKE NEWS" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="22.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-         </top>
-         <left>
-            <VBox prefHeight="346.0" prefWidth="160.0" style="-fx-background-color: #56419c; -fx-border-color: #ffffff;" BorderPane.alignment="CENTER">
-               <children>
-                  <Button fx:id="buttonHome" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onMouseClicked="#printHello" onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #56419c; -fx-border-color: #ffffff;" text="Home" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fx:id="homeImage" fitHeight="20.0" fitWidth="20.0">
-                           <image>
-                              <Image url="@homeLight.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="buttonTop" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onMouseClicked="#getTopNews" onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #56419c; -fx-border-color: #ffffff;" text="Top Headlines" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fx:id="articleImage" fitHeight="20.0" fitWidth="20.0">
-                           <image>
-                              <Image url="@articleLight.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="buttonBit" alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#getNewsBitcoin" onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #56419c; -fx-border-color: #ffffff;" text="Bitcoin News" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fx:id="bitcoinImage" fitHeight="20.0" fitWidth="20.0">
-                           <image>
-                              <Image url="@bitcoinLight.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="buttonCount" alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onMouseClicked="#getArticleCount" onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #56419c; -fx-border-color: #ffffff;" text="Article Count" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fx:id="calcImage" fitHeight="20.0" fitWidth="20.0">
-                           <image>
-                              <Image url="@calcLight.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="buttonLeave" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onMouseClicked="#leaveApp" onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #56419c; -fx-border-color: #ffffff;" text="Quit Program" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fx:id="exitImage" fitHeight="20.0" fitWidth="20.0">
-                           <image>
-                              <Image url="@exitLight.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <VBox prefHeight="261.0" prefWidth="158.0" style="-fx-border-color: #ffffff;" />
-               </children>
-            </VBox>
-         </left>
-         <center>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-color: #ffffff;" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
-               <content>
-                  <BorderPane prefHeight="509.0" prefWidth="607.0">
-                     <top>
-                        <HBox alignment="CENTER" prefHeight="31.0" prefWidth="479.0" style="-fx-background-color: #3a1e96; -fx-spacing: 27;" BorderPane.alignment="CENTER">
-                           <children>
-                              <Button fx:id="buttonMost" mnemonicParsing="false" onMouseClicked="#buttonHandler" onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: #56419c; -fx-border-color: FFFFFF; -fx-border-radius: 10;" text="Source" textFill="WHITE" />
-                              <Button fx:id="buttonLongest" mnemonicParsing="false" onMouseClicked="#buttonHandler" onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefWidth="90.0" style="-fx-background-color: #56419c; -fx-border-color: FFFFFF; -fx-border-radius: 10;" text="Author" textFill="WHITE" />
-                              <Button fx:id="buttonNYT" mnemonicParsing="false" onMouseClicked="#buttonHandler" onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefWidth="90.0" style="-fx-background-color: #56419c; -fx-border-color: FFFFFF; -fx-border-radius: 10;" text="NYT" textFill="WHITE" />
-                              <Button fx:id="buttonLess" mnemonicParsing="false" onMouseClicked="#buttonHandler" onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefWidth="90.0" style="-fx-background-color: #56419c; -fx-border-color: FFFFFF; -fx-border-radius: 10;" text="Title" textFill="WHITE" />
-                              <Button fx:id="buttonSort" mnemonicParsing="false" onMouseClicked="#buttonHandler" onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefHeight="25.0" prefWidth="90.0" style="-fx-background-color: #56419c; -fx-border-color: FFFFFF; -fx-border-radius: 10;" text="Description" textFill="WHITE" />
-                           </children>
-                        </HBox>
-                     </top>
-                     <center>
-                        <ScrollPane fx:id="paneText" prefHeight="467.0" prefWidth="478.0" BorderPane.alignment="CENTER">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="475.0">
-                                 <children>
-                                    <TextArea fx:id="text" prefHeight="474.0" prefWidth="475.0" style="-fx-background-color: #ffffff; -fx-border-color: #ffffff;" text="Willkommen auf unserer NewsApp" wrapText="true">
-                                       <font>
-                                          <Font size="13.0" />
-                                       </font>
-                                    </TextArea>
-                                 </children>
-                              </AnchorPane>
-                          </content>
-                        </ScrollPane>
-                     </center>
-                     <right>
-                        <SplitPane dividerPositions="0.7815126050420168" orientation="VERTICAL" prefHeight="478.0" prefWidth="126.0" BorderPane.alignment="CENTER">
-                          <items>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="368.0" prefWidth="124.0">
-                                 <children>
-                                    <VBox fx:id="boxMenu" layoutX="-1.0" layoutY="-4.0" prefHeight="378.0" prefWidth="127.0" style="-fx-background-color: FFFFFF; -fx-spacing: 8;">
-                                       <children>
-                                          <Label fx:id="labelEndpoint" alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="134.0" text="Label" wrapText="true" />
-                                          <Label fx:id="labelQuery1" alignment="CENTER" prefHeight="23.0" prefWidth="132.0" text="Label" />
-                                          <TextField fx:id="fieldQuery" prefHeight="29.0" prefWidth="0.0" />
-                                          <Label fx:id="labelQuery2" alignment="CENTER" prefHeight="30.0" prefWidth="134.0" text="Label" />
-                                          <ChoiceBox fx:id="optionQuery2" prefWidth="150.0" />
-                                          <Label fx:id="labelQuery3" alignment="CENTER" prefHeight="34.0" prefWidth="138.0" text="Label" />
-                                          <ChoiceBox fx:id="optionQuery3" prefWidth="150.0" />
-                                          <Button fx:id="buttonSubmit" mnemonicParsing="false" onMouseClicked="#getYourNews" prefHeight="29.0" prefWidth="142.0" text="Button" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </AnchorPane>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="98.0" prefWidth="124.0">
-                                 <children>
-                                    <VBox layoutX="-1.0" prefHeight="103.0" prefWidth="125.0" style="-fx-spacing: 8;">
-                                       <children>
-                                          <Label fx:id="labelDownload" alignment="CENTER" prefHeight="29.0" prefWidth="125.0" text="Label" wrapText="true" />
-                                          <TextField fx:id="fieldDownload" prefHeight="25.0" prefWidth="94.0" />
-                                          <Button fx:id="buttonDownload" onMouseClicked="#doDownload" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Button" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </AnchorPane>
-                          </items>
-                        </SplitPane>
-                     </right>
-                  </BorderPane>
-               </content>
-            </ScrollPane>
-         </center>
-      </BorderPane>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="581.0"
+            prefWidth="770.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="at.ac.fhcampuswien.HelloController">
+   <BorderPane prefHeight="480.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <top>
+         <HBox prefHeight="70.0" prefWidth="640.0" style="-fx-background-color: #3a1e96;" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="RIGHT" prefHeight="70.0" prefWidth="770.0"
+                   style="-fx-border-color: #ffffff;" text="NO FAKE NEWS" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="22.0"/>
+               </font>
+            </Label>
+         </HBox>
+      </top>
+      <left>
+         <VBox prefHeight="346.0" prefWidth="160.0" style="-fx-background-color: #56419c; -fx-border-color: #ffffff;"
+               BorderPane.alignment="CENTER">
+            <Button fx:id="buttonHome" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false"
+                    onMouseClicked="#printHello" onMouseEntered="#changeColor" onMouseExited="#changeColorBack"
+                    prefHeight="50.0" prefWidth="160.0"
+                    style="-fx-background-color: #56419c; -fx-border-color: #ffffff;" text="Home" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="13.0"/>
+               </font>
+               <graphic>
+                  <ImageView fx:id="homeImage" fitHeight="20.0" fitWidth="20.0">
+                     <Image url="@homeLight.png"/>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="buttonTop" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false"
+                    onMouseClicked="#getTopNews" onMouseEntered="#changeColor" onMouseExited="#changeColorBack"
+                    prefHeight="50.0" prefWidth="160.0"
+                    style="-fx-background-color: #56419c; -fx-border-color: #ffffff;" text="Top Headlines"
+                    textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="13.0"/>
+               </font>
+               <graphic>
+                  <ImageView fx:id="articleImage" fitHeight="20.0" fitWidth="20.0">
+                     <Image url="@articleLight.png"/>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="buttonBit" alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="10.0"
+                    mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#getNewsBitcoin"
+                    onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefHeight="50.0"
+                    prefWidth="160.0" style="-fx-background-color: #56419c; -fx-border-color: #ffffff;"
+                    text="Bitcoin News" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="13.0"/>
+               </font>
+               <graphic>
+                  <ImageView fx:id="bitcoinImage" fitHeight="20.0" fitWidth="20.0">
+                     <Image url="@bitcoinLight.png"/>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="buttonCount" alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="60.0"
+                    mnemonicParsing="false" onMouseClicked="#getArticleCount" onMouseEntered="#changeColor"
+                    onMouseExited="#changeColorBack" prefHeight="50.0" prefWidth="160.0"
+                    style="-fx-background-color: #56419c; -fx-border-color: #ffffff;" text="Article Count"
+                    textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="13.0"/>
+               </font>
+               <graphic>
+                  <ImageView fx:id="calcImage" fitHeight="20.0" fitWidth="20.0">
+                     <Image url="@calcLight.png"/>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="buttonLeave" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false"
+                    onMouseClicked="#leaveApp" onMouseEntered="#changeColor" onMouseExited="#changeColorBack"
+                    prefHeight="50.0" prefWidth="160.0"
+                    style="-fx-background-color: #56419c; -fx-border-color: #ffffff;" text="Quit Program"
+                    textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="13.0"/>
+               </font>
+               <graphic>
+                  <ImageView fx:id="exitImage" fitHeight="20.0" fitWidth="20.0">
+                     <Image url="@exitLight.png"/>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <VBox prefHeight="261.0" prefWidth="158.0" style="-fx-border-color: #ffffff;"/>
+         </VBox>
+      </left>
+      <center>
+         <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0"
+                     style="-fx-background-color: #ffffff; -fx-border-color: #ffffff;" vbarPolicy="NEVER"
+                     BorderPane.alignment="CENTER">
+            <BorderPane prefHeight="509.0" prefWidth="607.0">
+               <top>
+                  <HBox alignment="CENTER" prefHeight="31.0" prefWidth="479.0"
+                        style="-fx-background-color: #3a1e96; -fx-spacing: 27;" BorderPane.alignment="CENTER">
+                     <Button fx:id="buttonMost" mnemonicParsing="false" onMouseClicked="#buttonHandler"
+                             onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefHeight="27.0"
+                             prefWidth="90.0"
+                             style="-fx-background-color: #56419c; -fx-border-color: FFFFFF; -fx-border-radius: 10;"
+                             text="Source" textFill="WHITE"/>
+                     <Button fx:id="buttonLongest" mnemonicParsing="false" onMouseClicked="#buttonHandler"
+                             onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefWidth="90.0"
+                             style="-fx-background-color: #56419c; -fx-border-color: FFFFFF; -fx-border-radius: 10;"
+                             text="Author" textFill="WHITE"/>
+                     <Button fx:id="buttonNYT" mnemonicParsing="false" onMouseClicked="#buttonHandler"
+                             onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefWidth="90.0"
+                             style="-fx-background-color: #56419c; -fx-border-color: FFFFFF; -fx-border-radius: 10;"
+                             text="NYT" textFill="WHITE"/>
+                     <Button fx:id="buttonLess" mnemonicParsing="false" onMouseClicked="#buttonHandler"
+                             onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefWidth="90.0"
+                             style="-fx-background-color: #56419c; -fx-border-color: FFFFFF; -fx-border-radius: 10;"
+                             text="Title" textFill="WHITE"/>
+                     <Button fx:id="buttonSort" mnemonicParsing="false" onMouseClicked="#buttonHandler"
+                             onMouseEntered="#changeColor" onMouseExited="#changeColorBack" prefHeight="25.0"
+                             prefWidth="90.0"
+                             style="-fx-background-color: #56419c; -fx-border-color: FFFFFF; -fx-border-radius: 10;"
+                             text="Description" textFill="WHITE"/>
+                  </HBox>
+               </top>
+               <center>
+                  <ScrollPane fx:id="paneText" prefHeight="467.0" prefWidth="478.0" BorderPane.alignment="CENTER">
+                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="475.0">
+                        <TextArea fx:id="text" prefHeight="474.0" prefWidth="475.0"
+                                  style="-fx-background-color: #ffffff; -fx-border-color: #ffffff;"
+                                  text="Willkommen auf unserer NewsApp" wrapText="true">
+                           <font>
+                              <Font size="13.0"/>
+                           </font>
+                        </TextArea>
+                     </AnchorPane>
+                  </ScrollPane>
+               </center>
+               <right>
+                  <SplitPane dividerPositions="0.7815126050420168" orientation="VERTICAL" prefHeight="478.0"
+                             prefWidth="126.0" BorderPane.alignment="CENTER">
+                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="368.0" prefWidth="124.0">
+                        <GridPane fx:id="boxGrid" layoutX="-1.0" prefHeight="368.0" prefWidth="127.0" style="-fx-background-color: FFFFFF; -fx-background-color: #56419c;">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="87.0" minHeight="0.0" prefHeight="64.0"
+                                              vgrow="SOMETIMES"/>
+                              <RowConstraints maxHeight="184.0" minHeight="10.0" prefHeight="32.0"
+                                              vgrow="SOMETIMES"/>
+                              <RowConstraints maxHeight="307.0" minHeight="0.0" prefHeight="48.0"
+                                              vgrow="SOMETIMES"/>
+                              <RowConstraints maxHeight="307.0" minHeight="10.0" prefHeight="40.0"
+                                              vgrow="SOMETIMES"/>
+                              <RowConstraints maxHeight="307.0" minHeight="10.0" prefHeight="36.0"
+                                              vgrow="SOMETIMES"/>
+                              <RowConstraints maxHeight="130.0" minHeight="10.0" prefHeight="38.0"
+                                              vgrow="SOMETIMES"/>
+                              <RowConstraints maxHeight="130.0" minHeight="10.0" prefHeight="36.0"
+                                              vgrow="SOMETIMES"/>
+                              <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="78.0"
+                                              vgrow="SOMETIMES"/>
+                           </rowConstraints>
+                           <Label fx:id="labelEndpoint" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="127.0" text="Label" textAlignment="CENTER" wrapText="true" textFill="WHITE">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="labelQuery1" alignment="CENTER" prefHeight="23.0" prefWidth="132.0" text="Label" GridPane.rowIndex="1" textFill="WHITE">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <TextField fx:id="fieldQuery" prefHeight="27.0" prefWidth="47.0" GridPane.rowIndex="2" style="-fx-background-color: #DED4FF#DED4FF;"/>
+                           <Label fx:id="labelQuery2" alignment="CENTER" prefHeight="30.0" prefWidth="134.0"
+                                  text="Label" GridPane.rowIndex="3" textFill="WHITE">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <ComboBox fx:id="boxCountry" prefWidth="150.0" GridPane.rowIndex="4" style="-fx-background-color: #DED4FF#DED4FF;"/>
+                           <ComboBox fx:id="boxLanguage" prefWidth="150.0" GridPane.rowIndex="4" style="-fx-background-color: #DED4FF#DED4FF;"/>
+                           <Label fx:id="labelQuery3" alignment="CENTER" prefHeight="34.0" prefWidth="138.0"
+                                  text="Label" GridPane.rowIndex="5" textFill="WHITE">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <ComboBox fx:id="boxCategory" prefWidth="150.0" GridPane.rowIndex="6" style="-fx-background-color: #DED4FF#DED4FF;"/>
+                           <ComboBox fx:id="boxSortBy" prefWidth="150.0" GridPane.rowIndex="6" style="-fx-background-color: #DED4FF#DED4FF;"/>
+                           <Button fx:id="buttonSubmit" mnemonicParsing="false"
+                                   onMouseClicked="#getYourNews" prefHeight="29.0" prefWidth="142.0"
+                                   GridPane.rowIndex="7" style="-fx-background-color: #BCB4D8#BCB4D8;" text="Search"/>
+                        </GridPane>
+                     </AnchorPane>
+                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="98.0" prefWidth="124.0">
+                        <VBox layoutX="-1.0" prefHeight="103.0" prefWidth="125.0" style="-fx-background-color: #56419c;">
+                           <Label fx:id="labelDownload" alignment="CENTER" prefHeight="29.0"
+                                  prefWidth="125.0" text="Label" wrapText="true" style="-fx-background-color: #56419c;" textAlignment="CENTER" textFill="WHITE">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <TextField fx:id="fieldDownload" prefHeight="25.0" prefWidth="94.0" style="-fx-background-color: #DED4FF#DED4FF;"/>
+                           <Button fx:id="buttonDownload" alignment="CENTER" mnemonicParsing="false"
+                                   onMouseClicked="#doDownload" prefHeight="25.0" prefWidth="126.0"
+                                  style="-fx-background-color: #BCB4D8#BCB4D8;" text="Download"/>
+                        </VBox>
+                     </AnchorPane>
+                  </SplitPane>
+               </right>
+            </BorderPane>
+         </ScrollPane>
+      </center>
+   </BorderPane>
 </AnchorPane>

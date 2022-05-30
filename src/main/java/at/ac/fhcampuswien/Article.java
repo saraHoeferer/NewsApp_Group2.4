@@ -84,6 +84,6 @@ public class Article {
     //Override to string method so String looks like "Title: X, Author: X, Published at: X, URL"
     @Override
     public String toString(){
-        return "Title: " + title + "\nAuthor: " + author + ", Published at: "+ publishedAt + "\n" + url + "\nContent: " + content;
+        return "Title: " + title + "\nAuthor: " + author + ", Published at: "+ publishedAt + "\n" + url;
     }
 }
