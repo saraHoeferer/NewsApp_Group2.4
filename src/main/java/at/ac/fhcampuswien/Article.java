@@ -18,6 +18,7 @@ public class Article {
     }
 
     public void setAuthor(String author){
+        //Set to "no author" if author is null
         if (author == null){
             this.author = "No Author";
         } else {
@@ -46,6 +47,7 @@ public class Article {
     }
 
     public void setPublishedAt (String publishedAt){
+        //Cut date at Time so only DD.MM.YYYY is visible
         this.publishedAt = publishedAt.substring(0, publishedAt.indexOf("T"));
     }
 

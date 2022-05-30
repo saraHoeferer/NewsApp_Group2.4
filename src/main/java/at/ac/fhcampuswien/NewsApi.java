@@ -20,7 +20,6 @@ public class NewsApi {
     private final String apiKey = "6993410ad3df42c89bbb4c8b3b015172";
 
     //execute the get Request of specific url and return response
-    //Exception - alle
     private String doGetRequest(URL url) throws NewsApiExceptions {
         //create a client
         OkHttpClient client = new OkHttpClient();
@@ -28,9 +27,12 @@ public class NewsApi {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-        //create response by executing the request through client
+
+        //try to get response
         try {
+            //create response by executing the request through client
             Response response = client.newCall(request).execute();
+            //throw exception due to response codes from NewsApi
             if (response.code() == 429) {
                 throw new NewsApiExceptions("Too Many Requests. You made too many requests within a window of time and have been rate limited. Back off for a while.");
             } else if (response.code() == 500) {
@@ -38,25 +40,34 @@ public class NewsApi {
             } else {
                 return Objects.requireNonNull(response.body()).string();
             }
+        //catch different IO Exception and throw them as NewsApiExceptions
         } catch (UnknownHostException e){
-            throw new NewsApiExceptions(e);
+            throw new NewsApiExceptions(e.getMessage());
         }  catch (PortUnreachableException e){
-            throw new NewsApiExceptions(e);
+            throw new NewsApiExceptions(e.getMessage());
         }  catch (IOException e) {
-            throw new NewsApiExceptions(e);
+            throw new NewsApiExceptions(e.getMessage());
         }
     }
 
-    public void downloadFileSync(String downloadUrl, String dirPath) throws NewsApiExceptions {
+    //function to downloadFile
+    public void downloadFileURL(String downloadUrl, String dirPath) throws NewsApiExceptions {
+        //create new client
         OkHttpClient client = new OkHttpClient();
+        //Make new request with url from certain article
         Request request = new Request.Builder().url(downloadUrl).build();
         try {
+            //try to get response
             Response response = client.newCall(request).execute();
+            //and create outputstream
             FileOutputStream fos = new FileOutputStream(dirPath);
+            //and write
             fos.write(Objects.requireNonNull(response.body()).bytes());
+            //and close
             fos.close();
+        //catch IO Exception and throw it as NewsApiException
         } catch (IOException e) {
-            throw new NewsApiExceptions(e);
+            throw new NewsApiExceptions(e.getMessage());
         }
     }
 
@@ -104,19 +115,24 @@ public class NewsApi {
         return builder.build().url();
     }
 
-    //Exception/try and catch - alle
+    //get Response and map it as NewsResponse Object
     public NewsResponse getResponse(URL url) throws NewsApiExceptions {
         NewsResponse responses;
         //get response from specific url
         String response = doGetRequest(url);
-        //map response values (json values) to NewsResponse Object variables via Jackson
+
+        //try to map response as NewsResponse Object
         try {
+            //map response values (json values) to NewsResponse Object variables via Jackson
             responses = new ObjectMapper().readValue(response, NewsResponse.class);
+        //catch Json Exception and throw it as NewsApiException
         } catch (JsonProcessingException e) {
-            throw new NewsApiExceptions(e);
+            throw new NewsApiExceptions(e.getMessage());
         }
 
+        //if response comes back with status "error"
         if (responses.getStatus().equals("error")) {
+            //throw NewsApiException with according message
             throw new NewsApiExceptions(responses.getMessage());
         }
         //return filled NewsResponse Object

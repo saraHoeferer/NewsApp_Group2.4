@@ -7,8 +7,8 @@ public class NewsResponse {
     private String status; //Did response work?
     private int totalResults; //How many articles?
     private List<Article> articles; //List of responded articles
-    private String code;
-    private String message;
+    private String code; //Response Code (Error or ok?)
+    private String message; //Error message
 
     //Getter and Setter (Setter important for Jackson)
     public String getStatus() {
