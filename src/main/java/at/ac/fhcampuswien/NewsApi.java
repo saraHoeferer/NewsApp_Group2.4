@@ -10,6 +10,7 @@ import okhttp3.Response;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.PortUnreachableException;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -72,47 +73,56 @@ public class NewsApi {
     }
 
     //create Start of url which is has the same scheme for all request
-    private void createStart(HttpUrl.Builder builder, Endpoint endpoint, String query) {
+    private void createStart(URLBuilder builder, Endpoint endpoint, String query) {
         builder
                 //add scheme
                 .scheme("https")
                 //add host
                 .host("newsapi.org")
                 //add path (either everything or top-headlines)
-                .addPathSegments("v2/" + endpoint.getEndpoint())
+                .pathSegment("v2/" + endpoint.getEndpoint())
                 //add query
-                .addQueryParameter("q", query)
-                .addQueryParameter("apiKey", apiKey);
+                .queryParameter("q", query)
+                .queryParameter("apiKey", apiKey);
     }
 
     //create and return specific url for top-headlines
-    public URL buildUrlTop(Endpoint endpoint, String query, Country country, Category category) {
+    public URL buildUrlTop(Endpoint endpoint, String query, Country country, Category category) throws NewsApiExceptions {
         //Create URL Builder
-        HttpUrl.Builder builder = new HttpUrl.Builder();
+        URLBuilder builder = new URLBuilder();
         //add start of url
         createStart(builder, endpoint, query);
         //add specific query parameters
         builder
-                .addQueryParameter("country", country.getCountry())
-                .addQueryParameter("category", category.getCategory());
+                .queryParameter("country", country.getCountry())
+                .queryParameter("category", category.getCategory());
+
         //add ApiKey and build full URL
-        return builder.build().url();
+        try {
+            return builder.build();
+        } catch (MalformedURLException e){
+            throw new NewsApiExceptions(e.getMessage());
+        }
     }
 
     //create and return specific url for everything
-    public URL buildUrlEverything(Endpoint endpoint, String query, Language language, SortBy sortBy) {
+    public URL buildUrlEverything(Endpoint endpoint, String query, Language language, SortBy sortBy) throws NewsApiExceptions {
         //if query is null or empty null gets returned
         //Create URL Builder
-        HttpUrl.Builder builder = new HttpUrl.Builder();
+        URLBuilder builder = new URLBuilder();
         //add start of url
         createStart(builder, endpoint, query);
         //add specific query parameters
         builder
-                .addQueryParameter("language", language.getLanguage())
+                .queryParameter("language", language.getLanguage())
                 //.addQueryParameter("country", "at")
-                .addQueryParameter("sortBy", sortBy.getSort());
+                .queryParameter("sortBy", sortBy.getSort());
         //add ApiKey and build full URL
-        return builder.build().url();
+        try {
+            return builder.build();
+        } catch (MalformedURLException e){
+            throw new NewsApiExceptions(e.getMessage());
+        }
     }
 
     //get Response and map it as NewsResponse Object

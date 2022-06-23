@@ -56,6 +56,7 @@ public class HelloController {
     private String message = "";
     private boolean top = false;
     private boolean bit = false;
+    public URLBuilder build = new URLBuilder();
 
     //initialize App with values for ComboBoxes
     @FXML
@@ -66,6 +67,22 @@ public class HelloController {
         boxCategory.getItems().addAll(Category.values());
         boxLanguage.getItems().addAll(Language.values());
         boxSortBy.getItems().addAll(SortBy.values());
+    }
+
+    // Method is needed for exercise 4 - ignore for exercise 3 solution
+    private void downloadURLs(){
+        try {
+            int resultSequential = ctrl.downloadURLs(new SequentialDownloader());
+            // TODO print time in ms it took to download URLs sequentially
+
+            // TODO implement the process() function in ParallelDownloader class
+            int resultParallel = ctrl.downloadURLs(new ParallelDownloader());
+
+            // TODO print time in ms it took to download URLs parallel
+
+        } catch (NewsApiExceptions e){
+            System.out.println(e.getMessage());
+        }
     }
 
     //shows all news about bitcoin in textarea
