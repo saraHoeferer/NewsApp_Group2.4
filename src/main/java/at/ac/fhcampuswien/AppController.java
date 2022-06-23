@@ -12,6 +12,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppController {
     //instance variable
@@ -33,6 +35,17 @@ public class AppController {
         }
         //return sum
         return count;
+    }
+
+    public int downloadURLs(Downloader downloader) throws NewsApiExceptions{
+        if(response == null)
+            throw new NewsApiExceptions("Something went wrong");
+
+        List<String> urls = new ArrayList<>();
+
+        // TODO extract urls from articles with java stream
+
+        return downloader.process(urls);
     }
 
     //get all news, throw NewsApiException from getResponse
