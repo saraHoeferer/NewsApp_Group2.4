@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien;
 
 import at.ac.fhcampuswien.enumerations.*;
+import at.ac.fhcampuswien.filterStructuralPattern.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -9,11 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-import java.io.File;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class HelloController {
 
@@ -46,17 +43,22 @@ public class HelloController {
     public ComboBox <SortBy> boxSortBy;
     public Button buttonSubmit;
     public Label labelDownload;
-    public TextField fieldDownload;
     public Button buttonDownload;
     public GridPane boxGrid;
 
     //instance variables
-    private final AppController ctrl = new AppController();
+    private final AppController ctrl = AppController.getInstance();
     private NewsResponse response;
     private String message = "";
     private boolean top = false;
     private boolean bit = false;
-    public URLBuilder build = new URLBuilder();
+
+    //variables for Structural Patter "FILTER"
+    private final Criteria sortDescription = new SortDescription();
+    private final Criteria shortestHeadline = new ShortestHeadline();
+    private final Criteria sourceFilter = new SourceFilter();
+    private final Criteria longestName = new longestName();
+    private final Criteria mostArticles = new mostArticles();
 
     //initialize App with values for ComboBoxes
     @FXML
@@ -67,22 +69,6 @@ public class HelloController {
         boxCategory.getItems().addAll(Category.values());
         boxLanguage.getItems().addAll(Language.values());
         boxSortBy.getItems().addAll(SortBy.values());
-    }
-
-    // Method is needed for exercise 4 - ignore for exercise 3 solution
-    private void downloadURLs(){
-        try {
-            int resultSequential = ctrl.downloadURLs(new SequentialDownloader());
-            // TODO print time in ms it took to download URLs sequentially
-
-            // TODO implement the process() function in ParallelDownloader class
-            int resultParallel = ctrl.downloadURLs(new ParallelDownloader());
-
-            // TODO print time in ms it took to download URLs parallel
-
-        } catch (NewsApiExceptions e){
-            System.out.println(e.getMessage());
-        }
     }
 
     //shows all news about bitcoin in textarea
@@ -208,6 +194,7 @@ public class HelloController {
 
     //function to handle different button events
     public void buttonHandler(MouseEvent e) {
+        boolean printArticle = false;
         //if response is null
         if (response == null) {
             //You can't do any request so this message will be seen
@@ -217,125 +204,39 @@ public class HelloController {
             //choose function according to which button was pushed
             if (e.getSource().equals(buttonMost)) {
                 //Which Source has the most articles
-                filterMostArticles();
+                List<Article> mostCommon = mostArticles.criteria(response.getArticles());
+                message = "Most of the Articles were published by ' " + mostCommon.get(0).getSource().getName() + " '.";
             } else if (e.getSource().equals(buttonNYT)) {
                 //How many articles are from NYT
-                filterSource("New York Times");
+                List<Article> source = sourceFilter.criteria(response.getArticles());
+                message = "At the moment we offer " + source.size() + " articles from the New York Times.";
             } else if (e.getSource().equals(buttonLongest)) {
                 //which author has longest name
-                longestName();
+                List<Article> name = longestName.criteria(response.getArticles());
+                message = "The author with the longest name is called: ' " + name.get(0).getAuthor() + " '.";
             } else if (e.getSource().equals(buttonLess)) {
-                //Headlines with characters less than 15
-                shortestHeadline();
+                //Headlines with characters less than 60
+                List<Article> shortest = shortestHeadline.criteria(response.getArticles());
+                //if none were found
+                if (shortest.size() == 0) {
+                    //message is this
+                    message = "Unfortunately, there is no article that has less than 15 characters in its title.";
+                    //if articles were found print them
+                } else {
+                    printArticle = true;
+                    printArticle(shortest);
+                }
             } else if (e.getSource().equals(buttonSort)) {
                 //Sort by length of description
-                sortDescription();
+                List<Article> sorted = sortDescription.criteria(response.getArticles());
+                printArticle = true;
+                printArticle(sorted);
             }
         }
         //print whatever message is set
-        printText(message);
-    }
-
-    //function which shows how many articles were published by specific source
-    private void filterSource(String source) {
-        //create Stream from articlelist
-        Stream<Article> streamofArticle = response.getArticles().stream();
-        //filter articles according to source and count them
-        long cnt = streamofArticle
-                .filter(article -> article.getSource().getName().equals(source))
-                .count();
-        //set message to this
-        message = "At the moment we offer " + cnt + " articles from " + source + ".";
-
-    }
-
-    //function which shows which author has the longest name
-    private void longestName() {
-        List<String> authors = new ArrayList<>();
-        //get authors of article list and put them in new list
-        for (int i = 0; i < response.getArticles().size(); i++) {
-            authors.add(response.getArticles().get(i).getAuthor());
+        if (!printArticle) {
+            printText(message);
         }
-        //stream author list
-        String mostCommon = authors.stream()
-                //compare author name length and save the one with the most characters
-                .max(Comparator.comparing(String::length)).get();
-        //set message to this
-        message = "The author with the longest name is called: ' " + mostCommon + " '.";
-    }
-
-    //function that shows articles with headlines less than specific amount of characters
-    private void shortestHeadline() {
-        //make new Stream from articleList
-        Stream<Article> streamFromList = response.getArticles().stream();
-        //filter for all articles which titel have less than 15 characters
-        List<Article> newList = streamFromList
-                .filter(article -> article.getTitle().length() < 15)
-                //collect all them
-                .collect(Collectors.toList());
-        //if none were found
-        if (newList.size() == 0) {
-            //message is this
-            message = "Unfortunately, there is no article that has less than 15 characters in its title.";
-        //if articles were found print them
-        } else {
-            printArticle(newList);
-        }
-    }
-
-    //function that shows articles sorted after the length of their description
-    private void sortDescription() {
-        //make stream of article list
-        Stream<Article> streamOfArticles = response.getArticles().stream();
-        //sort them
-        List<Article> sorted = streamOfArticles
-                .sorted((a1, a2) -> {
-                    //if first description is null
-                    if (a1.getDescription() == null) {
-                        //second one is bigger
-                        return -1;
-                    //if second description is null
-                    } else if (a2.getDescription() == null) {
-                        //first one is bigger
-                        return 1;
-                    //if none of them are null
-                    } else {
-                        //if they have the same length
-                        if (a1.getDescription().length() == a2.getDescription().length())
-                            //compare alphabetically
-                            return a1.getDescription().compareTo(a2.getDescription());
-                        //if first one is bigger
-                        else if (a1.getDescription().length() > a2.getDescription().length())
-                            return 1;
-                        //else second one is bigger
-                        else return -1;
-                    }
-                })
-                //collect them all after sorting
-                .collect(Collectors.toList());
-        //print them
-        printArticle(sorted);
-    }
-
-    //function that shows which Sources published the most articles
-    private void filterMostArticles() {
-        //make new list
-        List<String> sources = new ArrayList<>();
-        //populate list with all sources from article list
-        for (int i = 0; i < response.getArticles().size(); i++) {
-            sources.add(response.getArticles().get(i).getSource().getName());
-        }
-
-        //stream source list
-        String mostCommon = sources.stream()
-                //collect occurence of all sources
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                //compare the entries and select the one with the most occurence
-                .entrySet().stream().max(Map.Entry.comparingByValue())
-                //make it values of string
-                .map(Map.Entry::getKey).orElse(null);
-        //print this
-        message = "Most of the Articles were published by ' " + mostCommon + " '.";
     }
 
     //function that manage the hide/show of the sidemenu
@@ -372,7 +273,6 @@ public class HelloController {
         labelEndpoint.setText("Click on Top-News or Bitcoin an see what happens.");
         labelDownload.setText("");
         buttonDownload.setVisible(false);
-        fieldDownload.setVisible(false);
     }
 
     //make all buttons visible again besides combobox items
@@ -382,8 +282,7 @@ public class HelloController {
         labelQuery2.setVisible(true);
         labelQuery3.setVisible(true);
         buttonSubmit.setVisible(true);
-        labelDownload.setText("Choose an article: ");
-        fieldDownload.setVisible(true);
+        labelDownload.setText("Download all articles");
         buttonDownload.setVisible(true);
     }
 
@@ -487,39 +386,25 @@ public class HelloController {
         }
     }
 
-    //function to perform download
-    public void doDownload() {
-        //get absolute path of project folder
-        String dirPath = new File("").getAbsolutePath();
-        //add textfile to it
-        dirPath += "\\downloadedArticle.txt";
-        //if input from user was made
-        if (fieldDownload.getText() != null && !fieldDownload.getText().equals("")){
-            //parse it to an integer
-            int input = Integer.parseInt(fieldDownload.getText());
-            //check if number is valid
-            if (input - 1  < response.getArticles().size() && input > 0){
-                //try to download the file
-                try {
-                    ctrl.downloadFile(response.getArticles().get(input - 1).getUrl(), dirPath);
-                    //if successful print this
-                    message = "Your article was downloaded successfully!";
-                //catch exception and print message
-                } catch (NewsApiExceptions e){
-                    message = e.getMessage();
-                }
-            //if number is not valid
-            } else {
-                //print this
-                message = "Only articles form the list can be downloaded.";
-            }
-        //if no input was made
-        } else {
-            //print this
-            message = "You must choose an article in order to download it.";
+    // Method is needed for exercise 4 - ignore for exercise 3 solution
+    public void downloadURLs(){
+
+        try {
+            long startTimeSeq = System.currentTimeMillis();
+            int resultSequential = ctrl.downloadURLs(new SequentialDownloader());
+            long entTimeSeq = System.currentTimeMillis();
+            message = "Time it took Sequential Downloader in ms was " + (entTimeSeq-startTimeSeq) + ". " + resultSequential + " URLS were downloaded\n";
+
+            long startTimePar = System.currentTimeMillis();
+            int resultParallel = ctrl.downloadURLs(new ParallelDownloader());
+            long entTimePar = System.currentTimeMillis();
+            message += "Time it took Parallel Downloader in ms was " + (entTimePar-startTimePar) + ". " + resultParallel + " URLS were downloaded\n";
+
+            printText(message);
+
+        } catch (NewsApiExceptions e){
+            printText(e.getMessage());
         }
-        //print message
-        printText(message);
     }
 
     //change color when mouse hovers over button

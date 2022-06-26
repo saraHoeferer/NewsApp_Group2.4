@@ -14,15 +14,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AppController {
     //instance variable
+    private static AppController instance = null;
     private NewsResponse response;
     private final NewsApi api;
 
     //constructor
-    public AppController() {
-        api = new NewsApi();
+    private AppController() {
+        api = NewsApi.getInstance();
+    }
+
+    public static AppController getInstance(){
+        if (instance == null){
+            instance = new AppController();
+        }
+        return instance;
     }
 
     //get amount of articles - Sara
@@ -43,7 +54,11 @@ public class AppController {
 
         List<String> urls = new ArrayList<>();
 
-        // TODO extract urls from articles with java stream
+        Stream<Article> streamofArticle = response.getArticles().stream();
+        urls = streamofArticle
+                .flatMap(Article->Stream.of(Article.getUrl(), Article.getUrlToImage()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
         return downloader.process(urls);
     }

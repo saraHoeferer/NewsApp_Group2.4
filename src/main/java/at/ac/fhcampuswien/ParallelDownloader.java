@@ -1,15 +1,38 @@
 package at.ac.fhcampuswien;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
-// Class is needed for exercise 4 - ignore for exercise 3 solution
 public class ParallelDownloader extends Downloader{
 
     // returns number of downloaded article urls
     @Override
-    public int process(List<String> urls) {
-        // TODO implement download function using multiple threads
+    public int process(List<String> urls) throws NewsApiExceptions {
         // Hint: use ExecutorService with Callables
-        return 0;
+        int numWorkers = Runtime.getRuntime().availableProcessors();
+        ExecutorService pool = Executors.newFixedThreadPool(numWorkers);
+
+        List<Future<String>> futures = new ArrayList<>();
+
+        for (int i = 0; i < urls.size(); i++){
+            int idx = i;
+            Callable<String> task = () -> saveUrl2File(urls.get(idx));
+            futures.add(pool.submit(task));
+        }
+
+        List<String> results = new ArrayList<>();
+        for (Future<String> result: futures){
+            try {
+                if (result.get() != null){
+                    results.add(result.get());
+                }
+            } catch (InterruptedException e) {
+               throw new NewsApiExceptions(e.getMessage());
+            } catch (ExecutionException e) {
+                throw new NewsApiExceptions(e.getMessage());
+            }
+        }
+        return results.size();
     }
 }

@@ -26,6 +26,8 @@ public abstract class Downloader {
 
             if (fileName.isEmpty()) {
                 fileName = url4download.getHost() + HTML_EXTENSION; // if no filename could be extracted use the URL host and .html extension
+            } else {
+                fileName = fileName.replace("?", "");
             }
 
             os = new FileOutputStream(DIRECTORY_DOWNLOAD + fileName);   // write to /download/<filename>

@@ -37,6 +37,7 @@ public class URLBuilder {
     public String toString(){
         return this.scheme + this.host + this.pathSegment + this.queryParamater;
     }
+
     public URL build() throws MalformedURLException {
         return new URL(this.toString());
     }

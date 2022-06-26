@@ -19,6 +19,16 @@ import java.util.Objects;
 public class NewsApi {
     //AppKey from NewsApi login
     private final String apiKey = "6993410ad3df42c89bbb4c8b3b015172";
+    private static NewsApi instance = null;
+
+    private NewsApi(){}
+
+    public static NewsApi getInstance(){
+        if (instance == null){
+            instance = new NewsApi();
+        }
+        return instance;
+    }
 
     //execute the get Request of specific url and return response
     private String doGetRequest(URL url) throws NewsApiExceptions {

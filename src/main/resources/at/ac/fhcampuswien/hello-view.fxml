@@ -219,9 +219,8 @@
                                  <Font size="14.0" />
                               </font>
                            </Label>
-                           <TextField fx:id="fieldDownload" prefHeight="25.0" prefWidth="94.0" style="-fx-background-color: #DED4FF#DED4FF;"/>
                            <Button fx:id="buttonDownload" alignment="CENTER" mnemonicParsing="false"
-                                   onMouseClicked="#doDownload" prefHeight="25.0" prefWidth="126.0"
+                                   onMouseClicked="#downloadURLs" prefHeight="25.0" prefWidth="126.0"
                                   style="-fx-background-color: #BCB4D8#BCB4D8;" text="Download"/>
                         </VBox>
                      </AnchorPane>
