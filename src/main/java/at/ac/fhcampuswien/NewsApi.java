@@ -3,12 +3,10 @@ package at.ac.fhcampuswien;
 import at.ac.fhcampuswien.enumerations.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.PortUnreachableException;
@@ -19,14 +17,24 @@ import java.util.Objects;
 public class NewsApi {
     //AppKey from NewsApi login
     private final String apiKey = "6993410ad3df42c89bbb4c8b3b015172";
+
+    //Singleton Pattern - because we want only one instance of NewsApi so only this one send request
+    //and we don't have multiple instances which all can make Requests to Api
+
+    //private instance which is null at the beginning
     private static NewsApi instance = null;
 
+    //Private Constructor
     private NewsApi(){}
 
+    //Public method getInstance
     public static NewsApi getInstance(){
+        //if instance is null, if no instance is there
         if (instance == null){
+            //make new instance
             instance = new NewsApi();
         }
+        //else return existed instance;
         return instance;
     }
 
@@ -61,28 +69,8 @@ public class NewsApi {
         }
     }
 
-    //function to downloadFile
-    public void downloadFileURL(String downloadUrl, String dirPath) throws NewsApiExceptions {
-        //create new client
-        OkHttpClient client = new OkHttpClient();
-        //Make new request with url from certain article
-        Request request = new Request.Builder().url(downloadUrl).build();
-        try {
-            //try to get response
-            Response response = client.newCall(request).execute();
-            //and create outputstream
-            FileOutputStream fos = new FileOutputStream(dirPath);
-            //and write
-            fos.write(Objects.requireNonNull(response.body()).bytes());
-            //and close
-            fos.close();
-        //catch IO Exception and throw it as NewsApiException
-        } catch (IOException e) {
-            throw new NewsApiExceptions(e.getMessage());
-        }
-    }
-
     //create Start of url which is has the same scheme for all request
+    //use own URLBuilder
     private void createStart(URLBuilder builder, Endpoint endpoint, String query) {
         builder
                 //add scheme
@@ -97,6 +85,7 @@ public class NewsApi {
     }
 
     //create and return specific url for top-headlines
+    //use own URLBuilder
     public URL buildUrlTop(Endpoint endpoint, String query, Country country, Category category) throws NewsApiExceptions {
         //Create URL Builder
         URLBuilder builder = new URLBuilder();
@@ -116,6 +105,7 @@ public class NewsApi {
     }
 
     //create and return specific url for everything
+    //use own URLBuilder
     public URL buildUrlEverything(Endpoint endpoint, String query, Language language, SortBy sortBy) throws NewsApiExceptions {
         //if query is null or empty null gets returned
         //Create URL Builder

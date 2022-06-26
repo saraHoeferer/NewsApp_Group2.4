@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+//class to sort list according to length of description -> implements Criteria Interface
 public class SortDescription implements Criteria {
+    //Override public function criteria
     @Override
     public List<Article> criteria (List<Article> articleList){
         //make stream of article list
@@ -36,6 +38,7 @@ public class SortDescription implements Criteria {
                 })
                 //collect them all after sorting
                 .collect(Collectors.toList());
+        //return list of articles sorted after length of description
         return sorted;
     }
 }

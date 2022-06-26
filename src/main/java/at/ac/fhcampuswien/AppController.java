@@ -1,17 +1,8 @@
 package at.ac.fhcampuswien;
 
 import at.ac.fhcampuswien.enumerations.*;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,23 +11,53 @@ import java.util.stream.Stream;
 
 public class AppController {
     //instance variable
-    private static AppController instance = null;
     private NewsResponse response;
     private final NewsApi api;
 
-    //constructor
+    //Singleton Pattern - because we want only one instance of AppController because it uses NewsApi and therefore also sends requests
+    //and we don't have multiple instances which all can make Requests to Api
+
+    //private instance which is null at the beginning
+    private static AppController instance = null;
+
+    //Private Constructor
     private AppController() {
         api = NewsApi.getInstance();
     }
 
+    //Public method getInstance
     public static AppController getInstance(){
+        //if instance is null, if no instance is there
         if (instance == null){
+            //make new instance
             instance = new AppController();
         }
+        //else return existed instance
         return instance;
     }
 
-    //get amount of articles - Sara
+    //Method from Solution of Exercise 3 from Leon's Github
+    public int downloadURLs(Downloader downloader) throws NewsApiExceptions{
+        if(response == null)
+            throw new NewsApiExceptions("Something went wrong");
+
+        List<String> urls = new ArrayList<>();
+
+        //Get Urls from Stream of Article List
+        Stream<Article> streamofArticle = response.getArticles().stream();
+        urls = streamofArticle
+                //get only Urls from article as well as from Urls form images
+                .flatMap(Article->Stream.of(Article.getUrl(), Article.getUrlToImage()))
+                //only get those objects were the url is not null
+                .filter(Objects::nonNull)
+                //collect them into url list
+                .collect(Collectors.toList());
+
+        //hand over list of urls to process method of whatever downloade is used
+        return downloader.process(urls);
+    }
+
+    //get amount of articles
     public int getArticleCount() {
         int count = 0;
         //if response is not null
@@ -46,21 +67,6 @@ public class AppController {
         }
         //return sum
         return count;
-    }
-
-    public int downloadURLs(Downloader downloader) throws NewsApiExceptions{
-        if(response == null)
-            throw new NewsApiExceptions("Something went wrong");
-
-        List<String> urls = new ArrayList<>();
-
-        Stream<Article> streamofArticle = response.getArticles().stream();
-        urls = streamofArticle
-                .flatMap(Article->Stream.of(Article.getUrl(), Article.getUrlToImage()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-        return downloader.process(urls);
     }
 
     //get all news, throw NewsApiException from getResponse
@@ -103,62 +109,4 @@ public class AppController {
         //return response
         return response;
     }
-
-    //function to manage download of files, throw NewsApiException from downloadFileURL
-    public void downloadFile(String url, String dirPath) throws NewsApiExceptions {
-        //download url from article into file
-        api.downloadFileURL(url, dirPath);
-        //cut parts of html so article gets more readable
-        manipulateFile(url, dirPath);
-    }
-
-    //function to cut parts form html text file,  throw NewsApiException because of IO Exceptions
-    public void manipulateFile(String url, String dirPath) throws NewsApiExceptions {
-        //get path of file
-        Path textfilePath = Paths.get(dirPath);
-        File f = new File(dirPath);
-
-        //if file doesn't exist
-        if (!f.exists()) {
-            //try to create file
-            try {
-                Files.createFile(textfilePath);
-            } catch (IOException e){
-                //or throw exception
-                throw new NewsApiExceptions(e.getMessage());
-            }
-        }
-
-        //create writer and doc
-        FileWriter writer;
-        Document doc;
-        try {
-            writer = new FileWriter(f);
-            doc = Jsoup.connect(url).get();
-        } catch (IOException e) {
-            throw new NewsApiExceptions(e.getMessage());
-        }
-
-        //cut links an images and save paragraphs and headlines
-        doc.select("a").remove();
-        doc.select("img").remove();
-        Elements p = doc.select("p");
-        Elements h1 = doc.select("h1");
-        Elements h2 = doc.select("h2");
-
-        //try to write those into file
-        try {
-            writer.write(h1.text());
-            writer.write(System.getProperty("line.separator"));
-            writer.write(h2.text());
-            writer.write(System.getProperty("line.separator"));
-            writer.write(p.text());
-            writer.close();
-        } catch (IOException e) {
-            //else throw Exception
-            throw new NewsApiExceptions(e.getMessage());
-        }
-    }
-
-
 }

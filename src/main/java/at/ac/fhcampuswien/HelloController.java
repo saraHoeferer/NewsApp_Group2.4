@@ -71,6 +71,97 @@ public class HelloController {
         boxSortBy.getItems().addAll(SortBy.values());
     }
 
+    //function to handle different button events
+    //Use of Structural Pattern FILTER
+    //due the fact that all the filter of the Articles list happens in different filter classes
+    //code in hello controller is way less than before, so now it all happens in button handler class on not in own functions
+    public void buttonHandler(MouseEvent e) {
+        boolean printArticle = false;
+        //if response is null
+        if (response == null) {
+            //You can't do any request so this message will be seen
+            message = "You need to either chose Top-News or Bitcoin first before making a request.";
+            //else define which button is pressed
+        } else {
+            //choose function according to which button was pushed
+            //only thing all of those events do is get List related to whatever they need to filter and then present result to user
+            if (e.getSource().equals(buttonMost)) {
+                //Which Source has the most articles
+                //get filtered list
+                List<Article> mostCommon = mostArticles.criteria(response.getArticles());
+                //set message
+                message = "Most of the Articles were published by ' " + mostCommon.get(0).getSource().getName() + " '.";
+            } else if (e.getSource().equals(buttonNYT)) {
+                //How many articles are from NYT
+                //get filtered list
+                List<Article> source = sourceFilter.criteria(response.getArticles());
+                //set message
+                message = "At the moment we offer " + source.size() + " articles from the New York Times.";
+            } else if (e.getSource().equals(buttonLongest)) {
+                //which author has longest name
+                //get filtered list
+                List<Article> name = longestName.criteria(response.getArticles());
+                //set message
+                message = "The author with the longest name is called: ' " + name.get(0).getAuthor() + " '.";
+            } else if (e.getSource().equals(buttonLess)) {
+                //Headlines with characters less than 60
+                //get filtered list
+                List<Article> shortest = shortestHeadline.criteria(response.getArticles());
+                //if none were found
+                if (shortest.size() == 0) {
+                    //message is this
+                    message = "Unfortunately, there is no article that has less than 15 characters in its title.";
+                } else {
+                    //if articles were found print them
+                    printArticle = true;
+                    printArticle(shortest);
+                }
+            } else if (e.getSource().equals(buttonSort)) {
+                //Sort by length of description
+                //get filtered list
+                List<Article> sorted = sortDescription.criteria(response.getArticles());
+                //print articles
+                printArticle = true;
+                printArticle(sorted);
+            }
+        }
+        //print whatever message is set if a list of articles is not already printed
+        if (!printArticle) {
+            printText(message);
+        }
+    }
+
+    //Method from Solution of Exercise 3 from Leon's Github
+    public void downloadURLs(){
+
+        //try to do download
+        try {
+            //measure time before function call
+            long startTimeSeq = System.currentTimeMillis();
+            //make sequential download
+            int resultSequential = ctrl.downloadURLs(new SequentialDownloader());
+            //measure time after function call
+            long entTimeSeq = System.currentTimeMillis();
+            //set message -> time is difference between end and start + print how many urls were downloaded
+            message = "Time it took Sequential Downloader in ms was " + (entTimeSeq-startTimeSeq) + ". " + resultSequential + " URLS were downloaded\n";
+
+            //measure time before function call
+            long startTimePar = System.currentTimeMillis();
+            //make parallel download
+            int resultParallel = ctrl.downloadURLs(new ParallelDownloader());
+            //measure time after function call
+            long entTimePar = System.currentTimeMillis();
+            //extend message -> time is difference between end and start + print how many urls were downloaded
+            message += "Time it took Parallel Downloader in ms was " + (entTimePar-startTimePar) + ". " + resultParallel + " URLS were downloaded\n";
+
+            //print message
+            printText(message);
+        } catch (NewsApiExceptions e){
+            //else catch exception and print it to user
+            printText(e.getMessage());
+        }
+    }
+
     //shows all news about bitcoin in textarea
     public void getNewsBitcoin() {
         //set Page to Bitcoin
@@ -190,53 +281,6 @@ public class HelloController {
         }
         //print message
         printText(message);
-    }
-
-    //function to handle different button events
-    public void buttonHandler(MouseEvent e) {
-        boolean printArticle = false;
-        //if response is null
-        if (response == null) {
-            //You can't do any request so this message will be seen
-            message = "You need to either chose Top-News or Bitcoin first before making a request.";
-        //else define which button is pressed
-        } else {
-            //choose function according to which button was pushed
-            if (e.getSource().equals(buttonMost)) {
-                //Which Source has the most articles
-                List<Article> mostCommon = mostArticles.criteria(response.getArticles());
-                message = "Most of the Articles were published by ' " + mostCommon.get(0).getSource().getName() + " '.";
-            } else if (e.getSource().equals(buttonNYT)) {
-                //How many articles are from NYT
-                List<Article> source = sourceFilter.criteria(response.getArticles());
-                message = "At the moment we offer " + source.size() + " articles from the New York Times.";
-            } else if (e.getSource().equals(buttonLongest)) {
-                //which author has longest name
-                List<Article> name = longestName.criteria(response.getArticles());
-                message = "The author with the longest name is called: ' " + name.get(0).getAuthor() + " '.";
-            } else if (e.getSource().equals(buttonLess)) {
-                //Headlines with characters less than 60
-                List<Article> shortest = shortestHeadline.criteria(response.getArticles());
-                //if none were found
-                if (shortest.size() == 0) {
-                    //message is this
-                    message = "Unfortunately, there is no article that has less than 15 characters in its title.";
-                    //if articles were found print them
-                } else {
-                    printArticle = true;
-                    printArticle(shortest);
-                }
-            } else if (e.getSource().equals(buttonSort)) {
-                //Sort by length of description
-                List<Article> sorted = sortDescription.criteria(response.getArticles());
-                printArticle = true;
-                printArticle(sorted);
-            }
-        }
-        //print whatever message is set
-        if (!printArticle) {
-            printText(message);
-        }
     }
 
     //function that manage the hide/show of the sidemenu
@@ -383,27 +427,6 @@ public class HelloController {
         //print articles
         if (response != null) {
             printArticle(response.getArticles());
-        }
-    }
-
-    // Method is needed for exercise 4 - ignore for exercise 3 solution
-    public void downloadURLs(){
-
-        try {
-            long startTimeSeq = System.currentTimeMillis();
-            int resultSequential = ctrl.downloadURLs(new SequentialDownloader());
-            long entTimeSeq = System.currentTimeMillis();
-            message = "Time it took Sequential Downloader in ms was " + (entTimeSeq-startTimeSeq) + ". " + resultSequential + " URLS were downloaded\n";
-
-            long startTimePar = System.currentTimeMillis();
-            int resultParallel = ctrl.downloadURLs(new ParallelDownloader());
-            long entTimePar = System.currentTimeMillis();
-            message += "Time it took Parallel Downloader in ms was " + (entTimePar-startTimePar) + ". " + resultParallel + " URLS were downloaded\n";
-
-            printText(message);
-
-        } catch (NewsApiExceptions e){
-            printText(e.getMessage());
         }
     }
 

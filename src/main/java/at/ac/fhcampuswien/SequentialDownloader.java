@@ -2,7 +2,7 @@ package at.ac.fhcampuswien;
 
 import java.util.List;
 
-// Class is needed for exercise 4 - ignore for exercise 3 solution
+//Class from Solution of Exercise 3 from Leons Github
 public class SequentialDownloader extends Downloader {
 
     // returns number of downloaded article urls

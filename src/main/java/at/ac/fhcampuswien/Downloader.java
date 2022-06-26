@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+//class from Solution of Exercise 3 from Leons Github only made one small change due to errors with fileName
 public abstract class Downloader {
 
     public static final String HTML_EXTENSION = ".html";
@@ -27,6 +28,7 @@ public abstract class Downloader {
             if (fileName.isEmpty()) {
                 fileName = url4download.getHost() + HTML_EXTENSION; // if no filename could be extracted use the URL host and .html extension
             } else {
+                //if filename is not empty then replace all ? with "" --> because a lot of errors because ? is not allowed in fileNames
                 fileName = fileName.replace("?", "");
             }
 
